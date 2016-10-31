@@ -10,8 +10,8 @@ package flexbox;
  * @author Markus
  */
 public class Box {
-    public int boxType, boxWidth, boxHeight, boxLength, gradeOfCard, colourPrint, 
-            quantity, totalPrice;
+    public int boxType, boxWidth, boxHeight, boxLength, gradeOfCard, colourPrint, quantity;
+    public float pricePerBox, totalPrice;
     public boolean reinforcedBottom, reinforcedCorners, sealableTops;
     
     public Box(){
@@ -32,7 +32,8 @@ public class Box {
         this.reinforcedBottom = newReinforcedBottom;
         this.reinforcedCorners = newReinforcedCorners;
         this.sealableTops = newSealableTops;
-        this.totalPrice = 0; //Price of box(es) is unknown at this moment
+        this.pricePerBox = 0f;//Price of box(es) is unknown at this moment
+        this.totalPrice = 0f; //Price of box(es) is unknown at this moment
     }
     
     public void setBoxType(int newBoxType){

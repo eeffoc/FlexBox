@@ -20,5 +20,4 @@ public class Main {
         order.test();
         // Create new object order as an example test
     }
-    
 }

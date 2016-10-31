@@ -28,7 +28,9 @@ public class Order {
     public void test(){
         makeTestOrder();
         for (Box boxInList : boxList) {
-            System.out.println("Type: " + getTypeOfBox(boxInList)
+            boxInList.boxType = getTypeOfBox(boxInList);
+            setBoxPrice(boxInList);
+            System.out.println("Type: " + boxInList.boxType
             + "\nWidth (cm): " + boxInList.boxWidth 
             + "\nHeight (cm): " + boxInList.boxHeight 
             + "\nLength (cm): " + boxInList.boxLength 
@@ -38,7 +40,8 @@ public class Order {
             + "\nReinforced bottom: " + boxInList.reinforcedBottom
             + "\nReinforced corners: " + boxInList.reinforcedCorners
             + "\nSealable tops: " + boxInList.sealableTops
-            + "\nPrice: " + boxInList.totalPrice);
+            + "\nTotal Price: £" + boxInList.totalPrice
+            + "\nPrice per box: £" + boxInList.pricePerBox);
         }
     }
     
@@ -46,7 +49,7 @@ public class Order {
          boxList = new ArrayList<Box>();
         //TODO: Change hard-coded 1 to a variable of box amount
         for(int i = 0; i < 1; i++){ //Create objects of class Box per order + add to List
-        boxList.add(new Box(160,60,40,1,0,20,false,false,false)); //TODO: Pull data from GUI when user enters data
+        boxList.add(new Box(150,260,110,3,2,5,true,false,true)); //TODO: Pull data from GUI when user enters data
         }
     }
     
@@ -65,9 +68,42 @@ public class Order {
                     return 5;
                 }  
             }
-        
         return 0; //Error
+    }
+    
+    public void setBoxPrice(Box box){
+        float areaOfBoxMetreSquared = (2 * (box.boxLength * box.boxWidth) +
+                2 * (box.boxLength * box.boxHeight) + 2 * (box.boxWidth * box.boxHeight))
+                / 10000f; // Change from cm2 to m2
+        float additionalCost = 1f; //This is a multipler thus starts at 1
         
+        if(box.colourPrint == 1) additionalCost += 0.13;
+        if(box.colourPrint == 2) additionalCost += 0.16;
+        if(box.reinforcedBottom) additionalCost += 0.14;
+        if(box.reinforcedCorners) additionalCost += 0.1;
+        if(box.sealableTops) additionalCost += 0.08;
+        
+        float costPerMetreSquared = 0f;
+        switch(box.gradeOfCard){
+            case 1:
+                costPerMetreSquared = 0.5f;
+                break;
+            case 2:
+                costPerMetreSquared = 0.6f;
+                break;
+            case 3:
+                costPerMetreSquared = 0.72f;
+                break;
+            case 4:
+                costPerMetreSquared = 0.9f;
+                break;
+            case 5:
+                costPerMetreSquared = 1.4f;
+                break;
+        }
+        
+        box.pricePerBox = (areaOfBoxMetreSquared * costPerMetreSquared) * additionalCost;
+        box.totalPrice = box.pricePerBox * box.quantity;
     }
 }
 
