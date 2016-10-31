@@ -14,8 +14,18 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     /**
      * Creates new form FlexBoxGUI
      */
+    
+    private int col = 0;
+    private boolean bottom = false;
+    private boolean corners = false;
+    private int grade = 1;
+    private boolean sealableTop = false;
+    private double price = 0;
+    private int quantity = 0;
+    
     public FlexBoxGUI() {
         initComponents();
+        AddNewItem.setVisible(false);
     }
 
     /**
@@ -27,22 +37,403 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ColourButtons = new javax.swing.ButtonGroup();
+        AddNewItem = new javax.swing.JFrame();
+        GradeSlider = new javax.swing.JSlider();
+        ColourRadio2 = new javax.swing.JRadioButton();
+        ColourRadio0 = new javax.swing.JRadioButton();
+        ColourRadio1 = new javax.swing.JRadioButton();
+        SealableCheckbox = new javax.swing.JCheckBox();
+        BottomCheckbox = new javax.swing.JCheckBox();
+        CornerCheckbox = new javax.swing.JCheckBox();
+        PriceLabel = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        jSeparator3 = new javax.swing.JSeparator();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        CancelButton = new javax.swing.JButton();
+        AddButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jEditorPane1 = new javax.swing.JEditorPane();
+        LabelTotal = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        Label_Main = new javax.swing.JLabel();
+        Label_CurrOrd = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        List_CurrOrd = new javax.swing.JList<>();
+        Label_Total = new javax.swing.JLabel();
+        Label_TotalSum = new javax.swing.JLabel();
+        Button_AddBox = new javax.swing.JButton();
+        Button_CheckOut = new javax.swing.JButton();
+
+        AddNewItem.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        AddNewItem.setTitle("Add New Item");
+        AddNewItem.setMaximumSize(new java.awt.Dimension(720, 450));
+        AddNewItem.setMinimumSize(new java.awt.Dimension(720, 450));
+        AddNewItem.setPreferredSize(new java.awt.Dimension(720, 450));
+        AddNewItem.setResizable(false);
+        AddNewItem.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                AddNewItemMouseMoved(evt);
+            }
+        });
+        AddNewItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AddNewItemMouseClicked(evt);
+            }
+        });
+        AddNewItem.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                AddNewItemPropertyChange(evt);
+            }
+        });
+        AddNewItem.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                AddNewItemWindowClosing(evt);
+            }
+        });
+        AddNewItem.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        GradeSlider.setMajorTickSpacing(1);
+        GradeSlider.setMaximum(5);
+        GradeSlider.setMinimum(1);
+        GradeSlider.setMinorTickSpacing(1);
+        GradeSlider.setPaintLabels(true);
+        GradeSlider.setValue(1);
+        GradeSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                GradeSliderStateChanged(evt);
+            }
+        });
+        AddNewItem.getContentPane().add(GradeSlider, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 130, 30));
+
+        ColourButtons.add(ColourRadio2);
+        ColourRadio2.setText("Two Coloured");
+        ColourRadio2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ColourRadio2MouseClicked(evt);
+            }
+        });
+        AddNewItem.getContentPane().add(ColourRadio2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, -1, -1));
+
+        ColourButtons.add(ColourRadio0);
+        ColourRadio0.setText("No colour");
+        ColourRadio0.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                ColourRadio0StateChanged(evt);
+            }
+        });
+        ColourRadio0.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ColourRadio0MouseClicked(evt);
+            }
+        });
+        AddNewItem.getContentPane().add(ColourRadio0, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, -1, -1));
+
+        ColourButtons.add(ColourRadio1);
+        ColourRadio1.setText("Single Coloured");
+        ColourRadio1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ColourRadio1MouseClicked(evt);
+            }
+        });
+        AddNewItem.getContentPane().add(ColourRadio1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, -1, -1));
+
+        SealableCheckbox.setText("Sealable");
+        SealableCheckbox.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                SealableCheckboxStateChanged(evt);
+            }
+        });
+        AddNewItem.getContentPane().add(SealableCheckbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 100, -1, -1));
+
+        BottomCheckbox.setText("Reinforced");
+        BottomCheckbox.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                BottomCheckboxStateChanged(evt);
+            }
+        });
+        AddNewItem.getContentPane().add(BottomCheckbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, -1, -1));
+
+        CornerCheckbox.setText("Reinforced");
+        CornerCheckbox.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                CornerCheckboxStateChanged(evt);
+            }
+        });
+        AddNewItem.getContentPane().add(CornerCheckbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 100, -1, -1));
+
+        PriceLabel.setText("£0.00");
+        AddNewItem.getContentPane().add(PriceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 100, -1, 20));
+        AddNewItem.getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 720, 10));
+        AddNewItem.getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 720, 10));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Grade");
+        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        AddNewItem.getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 90, 30));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Colour");
+        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        AddNewItem.getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 90, 30));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Sub-Total");
+        jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        AddNewItem.getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 40, 90, 30));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Bottom");
+        jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        AddNewItem.getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 40, 90, 30));
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Corners");
+        jLabel6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        AddNewItem.getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 40, 90, 30));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Top");
+        jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        AddNewItem.getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 40, 90, 30));
+
+        CancelButton.setText("Cancel");
+        CancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                CancelButtonMousePressed(evt);
+            }
+        });
+        AddNewItem.getContentPane().add(CancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 340, 140, 40));
+
+        AddButton.setText("Add To Cart");
+        AddNewItem.getContentPane().add(AddButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 140, 40));
+
+        jEditorPane1.setText("1");
+        jScrollPane2.setViewportView(jEditorPane1);
+
+        AddNewItem.getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 180, 120, -1));
+
+        LabelTotal.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        LabelTotal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LabelTotal.setText("£0.00");
+        AddNewItem.getContentPane().add(LabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 230, 120, 40));
+
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("Quantity");
+        AddNewItem.getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, 120, -1));
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Total:");
+        AddNewItem.getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 210, 120, -1));
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("FlexBox");
+        setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        setPreferredSize(new java.awt.Dimension(736, 550));
+        setResizable(false);
+        setSize(new java.awt.Dimension(736, 550));
+
+        Label_Main.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        Label_Main.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Label_Main.setText("FlexBox");
+
+        Label_CurrOrd.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        Label_CurrOrd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Label_CurrOrd.setText("Current Order:");
+        Label_CurrOrd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        List_CurrOrd.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jScrollPane1.setViewportView(List_CurrOrd);
+
+        Label_Total.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        Label_Total.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Label_Total.setText("Total:");
+
+        Label_TotalSum.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        Label_TotalSum.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        Label_TotalSum.setText("£0.00");
+
+        Button_AddBox.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        Button_AddBox.setText("Add To Order");
+        Button_AddBox.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                Button_AddBoxMouseDragged(evt);
+            }
+        });
+        Button_AddBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Button_AddBoxMouseClicked(evt);
+            }
+        });
+
+        Button_CheckOut.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        Button_CheckOut.setText("Check out");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(Label_Main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jSeparator1)
+            .addComponent(Label_CurrOrd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(58, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Label_Total, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Label_TotalSum, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(65, 65, 65))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 613, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(65, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(259, 259, 259)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Button_CheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Button_AddBox, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(Label_Main)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Label_CurrOrd)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Label_Total)
+                    .addComponent(Label_TotalSum))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Button_AddBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Button_CheckOut)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        getAccessibleContext().setAccessibleDescription("Desktop application for placing orders");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void Button_AddBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_AddBoxMouseClicked
+        AddNewItem.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_Button_AddBoxMouseClicked
+
+    private void Button_AddBoxMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_AddBoxMouseDragged
+        AddNewItem.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_Button_AddBoxMouseDragged
+
+    private void AddNewItemWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_AddNewItemWindowClosing
+        this.setVisible(true);
+    }//GEN-LAST:event_AddNewItemWindowClosing
+
+    private void CancelButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelButtonMousePressed
+        this.setVisible(true);
+        AddNewItem.setVisible(false);
+    }//GEN-LAST:event_CancelButtonMousePressed
+
+    private void GradeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_GradeSliderStateChanged
+        grade = GradeSlider.getValue();
+        PriceLabel.setText(Integer.toString(grade));
+    }//GEN-LAST:event_GradeSliderStateChanged
+
+    private void ColourRadio0StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ColourRadio0StateChanged
+    }//GEN-LAST:event_ColourRadio0StateChanged
+
+    private void CornerCheckboxStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CornerCheckboxStateChanged
+        boolean selected = CornerCheckbox.isSelected();
+        if (selected) {
+            corners = true;
+        }
+        else corners = false;
+        PriceLabel.setText(Boolean.toString(corners));
+    }//GEN-LAST:event_CornerCheckboxStateChanged
+
+    private void SealableCheckboxStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SealableCheckboxStateChanged
+        boolean selected = SealableCheckbox.isSelected();
+        if (selected) {
+            sealableTop = true;
+        }
+        else sealableTop = false;
+        PriceLabel.setText(Boolean.toString(sealableTop));
+    }//GEN-LAST:event_SealableCheckboxStateChanged
+
+    private void BottomCheckboxStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_BottomCheckboxStateChanged
+        boolean selected = BottomCheckbox.isSelected();
+        if (selected) {
+            bottom = true;
+        }
+        else bottom = false;
+        PriceLabel.setText(Boolean.toString(bottom));
+    }//GEN-LAST:event_BottomCheckboxStateChanged
+
+    private void AddNewItemPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_AddNewItemPropertyChange
+
+    }//GEN-LAST:event_AddNewItemPropertyChange
+
+    private void AddNewItemMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddNewItemMouseMoved
+
+    }//GEN-LAST:event_AddNewItemMouseMoved
+
+    private void AddNewItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddNewItemMouseClicked
+        switch (col) {
+            case 0:
+                BottomCheckbox.setEnabled(false);
+                CornerCheckbox.setEnabled(false);
+                GradeSlider.setMinimum(1);
+                GradeSlider.setMaximum(3);
+                GradeSlider.setValue(1);
+                break;
+            case 1:
+                BottomCheckbox.setEnabled(false);
+                CornerCheckbox.setEnabled(false);
+                GradeSlider.setMinimum(2);
+                GradeSlider.setMaximum(4);
+                GradeSlider.setValue(2);
+                break;
+            case 2:
+                BottomCheckbox.setEnabled(true);
+                CornerCheckbox.setEnabled(true);
+                GradeSlider.setMinimum(1);
+                GradeSlider.setMaximum(5);
+                GradeSlider.setValue(1);
+                break;   
+        }
+    }//GEN-LAST:event_AddNewItemMouseClicked
+
+    private void ColourRadio0MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ColourRadio0MouseClicked
+        col = 0;
+    }//GEN-LAST:event_ColourRadio0MouseClicked
+
+    private void ColourRadio1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ColourRadio1MouseClicked
+        col = 1;
+    }//GEN-LAST:event_ColourRadio1MouseClicked
+
+    private void ColourRadio2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ColourRadio2MouseClicked
+        col = 2;
+    }//GEN-LAST:event_ColourRadio2MouseClicked
+
+    
     /**
      * @param args the command line arguments
      */
@@ -79,5 +470,39 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AddButton;
+    private javax.swing.JFrame AddNewItem;
+    private javax.swing.JCheckBox BottomCheckbox;
+    private javax.swing.JButton Button_AddBox;
+    private javax.swing.JButton Button_CheckOut;
+    private javax.swing.JButton CancelButton;
+    private javax.swing.ButtonGroup ColourButtons;
+    private javax.swing.JRadioButton ColourRadio0;
+    private javax.swing.JRadioButton ColourRadio1;
+    private javax.swing.JRadioButton ColourRadio2;
+    private javax.swing.JCheckBox CornerCheckbox;
+    private javax.swing.JSlider GradeSlider;
+    private javax.swing.JLabel LabelTotal;
+    private javax.swing.JLabel Label_CurrOrd;
+    private javax.swing.JLabel Label_Main;
+    private javax.swing.JLabel Label_Total;
+    private javax.swing.JLabel Label_TotalSum;
+    private javax.swing.JList<String> List_CurrOrd;
+    private javax.swing.JLabel PriceLabel;
+    private javax.swing.JCheckBox SealableCheckbox;
+    private javax.swing.JEditorPane jEditorPane1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     // End of variables declaration//GEN-END:variables
 }
