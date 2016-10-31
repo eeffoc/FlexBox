@@ -13,13 +13,7 @@ import java.util.List;
  * @author Markus
  */
 public class Order {
-    public int orderTotal, totalBoxesOrdered;
-    List<Box> boxList;
-
-    public Order(int newOrderTotal, int newTotalBoxesOrdered){
-        this.orderTotal = newOrderTotal;
-        this.totalBoxesOrdered = newTotalBoxesOrdered;
-    }
+    private List<Box> boxList;
     
     public Order(){
         
@@ -28,63 +22,69 @@ public class Order {
     public void test(){
         makeTestOrder();
         for (Box boxInList : boxList) {
-            boxInList.boxType = getTypeOfBox(boxInList);
+            boxInList.setBoxType(getTypeOfBox(boxInList));
             setBoxPrice(boxInList);
-            System.out.println("Type: " + boxInList.boxType
-            + "\nWidth (cm): " + boxInList.boxWidth 
-            + "\nHeight (cm): " + boxInList.boxHeight 
-            + "\nLength (cm): " + boxInList.boxLength 
-            + "\nGrade of card: " + boxInList.gradeOfCard 
-            + "\nColour print: " + boxInList.colourPrint 
-            + "\nQuantity: " + boxInList.quantity
-            + "\nReinforced bottom: " + boxInList.reinforcedBottom
-            + "\nReinforced corners: " + boxInList.reinforcedCorners
-            + "\nSealable tops: " + boxInList.sealableTops
-            + "\nTotal Price: £" + boxInList.totalPrice
-            + "\nPrice per box: £" + boxInList.pricePerBox);
+            if(boxInList.getBoxType() == 0){
+                System.out.println("We cannot manufacture boxes with these selected criterias");
+            } else {
+                System.out.println("Type: " + boxInList.getBoxType()
+            + "\nWidth (cm): " + boxInList.getBoxWidth()
+            + "\nHeight (cm): " + boxInList.getBoxHeight()
+            + "\nLength (cm): " + boxInList.getBoxLength()
+            + "\nGrade of card: " + boxInList.getGradeOfCard()
+            + "\nColour print: " + boxInList.getColourPrint()
+            + "\nQuantity: " + boxInList.getQuantity()
+            + "\nReinforced bottom: " + boxInList.getReinforcedBottom()
+            + "\nReinforced corners: " + boxInList.getReinforcedCorners()
+            + "\nSealable tops: " + boxInList.getSealableTops()
+            + "\nTotal Price: £" + String.format("%.2f", boxInList.getTotalPrice())
+            + "\nPrice per box: £" + String.format("%.2f", boxInList.getPricePerBox()));
+            }
         }
     }
     
     public void makeTestOrder(){ //TODO: change this when out of testing phase
-         boxList = new ArrayList<Box>();
+        boxList = new ArrayList<Box>();
         //TODO: Change hard-coded 1 to a variable of box amount
         for(int i = 0; i < 1; i++){ //Create objects of class Box per order + add to List
-        boxList.add(new Box(150,260,110,3,2,5,true,false,true)); //TODO: Pull data from GUI when user enters data
+        boxList.add(new Box(160,260,110,3,0,18,false,false,true)); //TODO: Pull data from GUI when user enters data
         }
     }
     
     public int getTypeOfBox(Box box){
-        switch (box.colourPrint){
+        switch (box.getColourPrint()){
             case 0:
                 return 1;
             case 1:
                 return 2;
             case 2:
-                if (!box.reinforcedBottom && !box.reinforcedCorners){
+                if (!box.getReinforcedBottom() && !box.getReinforcedCorners()){
                     return 3;
-                } else if (box.reinforcedBottom && !box.reinforcedCorners){
+                } else if (box.getReinforcedBottom() && !box.getReinforcedCorners()){
                     return 4;
-                } else {
+                } else if (box.getReinforcedBottom() && box.getReinforcedCorners()){
                     return 5;
-                }  
+                }  else {
+                    return 0; //Type of Box not available
+                }
             }
-        return 0; //Error
+        return 0; //Type of Box not available (or error occured)
     }
     
     public void setBoxPrice(Box box){
-        float areaOfBoxMetreSquared = (2 * (box.boxLength * box.boxWidth) +
-                2 * (box.boxLength * box.boxHeight) + 2 * (box.boxWidth * box.boxHeight))
+        float areaOfBoxMetreSquared = (2 * (box.getBoxLength() * box.getBoxWidth()) +
+                2 * (box.getBoxLength() * box.getBoxHeight()) + 2 * (box.getBoxWidth() * box.getBoxHeight()))
                 / 10000f; // Change from cm2 to m2
         float additionalCost = 1f; //This is a multipler thus starts at 1
         
-        if(box.colourPrint == 1) additionalCost += 0.13;
-        if(box.colourPrint == 2) additionalCost += 0.16;
-        if(box.reinforcedBottom) additionalCost += 0.14;
-        if(box.reinforcedCorners) additionalCost += 0.1;
-        if(box.sealableTops) additionalCost += 0.08;
+        if(box.getColourPrint() == 1) additionalCost += 0.13;
+        if(box.getColourPrint() == 2) additionalCost += 0.16;
+        if(box.getReinforcedBottom()) additionalCost += 0.14;
+        if(box.getReinforcedCorners()) additionalCost += 0.1;
+        if(box.getSealableTops()) additionalCost += 0.08;
         
         float costPerMetreSquared = 0f;
-        switch(box.gradeOfCard){
+        switch(box.getGradeOfCard()){
             case 1:
                 costPerMetreSquared = 0.5f;
                 break;
@@ -102,9 +102,7 @@ public class Order {
                 break;
         }
         
-        box.pricePerBox = (areaOfBoxMetreSquared * costPerMetreSquared) * additionalCost;
-        box.totalPrice = box.pricePerBox * box.quantity;
+        box.setPricePerBox((areaOfBoxMetreSquared * costPerMetreSquared) * additionalCost);
+        box.setTotalPrice(box.getPricePerBox() * box.getQuantity());
     }
 }
-
-
