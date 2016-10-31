@@ -16,8 +16,7 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
-        //this is a new line of text
+
     }
     
 }
