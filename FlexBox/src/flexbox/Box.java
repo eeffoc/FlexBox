@@ -10,9 +10,9 @@ package flexbox;
  * @author Markus
  */
 public class Box {
-    public int boxWidth, boxHeight, boxLength, gradeOfCard, colourPrint, 
+    public int boxType, boxWidth, boxHeight, boxLength, gradeOfCard, colourPrint, 
             quantity, totalPrice;
-    public boolean reinforcedBottom, reinforcedCorners;
+    public boolean reinforcedBottom, reinforcedCorners, sealableTops;
     
     public Box(){
         
@@ -20,7 +20,9 @@ public class Box {
     
     public Box(int newBoxWidth, int newBoxHeight, int newBoxLength, 
             int newGradeOfCard, int newColourPrint, int newQuantity, 
-            boolean newReinforcedBottom, boolean newReinforcedCorners){
+            boolean newReinforcedBottom, boolean newReinforcedCorners, 
+            boolean newSealableTops){
+        this.boxType = 0; //Box Type unknown at this moment
         this.boxWidth = newBoxWidth;
         this.boxHeight = newBoxHeight;
         this.boxLength = newBoxLength;
@@ -29,6 +31,11 @@ public class Box {
         this.quantity = newQuantity;
         this.reinforcedBottom = newReinforcedBottom;
         this.reinforcedCorners = newReinforcedCorners;
+        this.sealableTops = newSealableTops;
         this.totalPrice = 0; //Price of box(es) is unknown at this moment
+    }
+    
+    public void setBoxType(int newBoxType){
+        this.boxType = newBoxType;
     }
 }

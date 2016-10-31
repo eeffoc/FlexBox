@@ -16,7 +16,9 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-
+        Order order = new Order();
+        order.test();
+        // Create new object order as an example test
     }
     
 }
