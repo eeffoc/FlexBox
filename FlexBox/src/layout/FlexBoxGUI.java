@@ -368,8 +368,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         GradeSlider.setMinimum(1);
         GradeSlider.setMaximum(3);
         GradeSlider.setValue(1);
-        BottomCheckbox.setEnabled(false);
-        CornerCheckbox.setEnabled(false);
+        disableReinforcments();
         ColourRadio0.setSelected(true);
     }//GEN-LAST:event_Button_AddBoxMouseClicked
 
@@ -379,8 +378,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         GradeSlider.setMinimum(1);
         GradeSlider.setMaximum(3);
         GradeSlider.setValue(1);
-        BottomCheckbox.setEnabled(false);
-        CornerCheckbox.setEnabled(false);
+        disableReinforcments();
         ColourRadio0.setSelected(true);
     }//GEN-LAST:event_Button_AddBoxMouseDragged
 
@@ -395,36 +393,24 @@ public class FlexBoxGUI extends javax.swing.JFrame {
 
     private void ColourRadio0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColourRadio0ActionPerformed
         if (ColourRadio0.isSelected()){
-            GradeSlider.setMinimum(1);
-            GradeSlider.setMaximum(3);
-            GradeSlider.setValue(1);
-            BottomCheckbox.setEnabled(false);
-            CornerCheckbox.setEnabled(false);
-            BottomCheckbox.setSelected(false);
-            CornerCheckbox.setSelected(false);  
+            setGradeSlider(1, 3);
+            disableReinforcments();
         }
     }//GEN-LAST:event_ColourRadio0ActionPerformed
 
     private void ColourRadio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColourRadio1ActionPerformed
         if (ColourRadio1.isSelected()){
-            GradeSlider.setMinimum(2);
-            GradeSlider.setMaximum(4);
-            GradeSlider.setValue(2);
-            BottomCheckbox.setEnabled(false);
-            CornerCheckbox.setEnabled(false);
-            BottomCheckbox.setSelected(false);
-            CornerCheckbox.setSelected(false);
+            setGradeSlider(2, 4);
+            disableReinforcments();
         }
     }//GEN-LAST:event_ColourRadio1ActionPerformed
 
     private void ColourRadio2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColourRadio2ActionPerformed
         if (ColourRadio2.isSelected()){
-            GradeSlider.setMinimum(2);
-            GradeSlider.setMaximum(5);
-            GradeSlider.setValue(2);
+            setGradeSlider(2, 5);
             BottomCheckbox.setEnabled(true);
             CornerCheckbox.setEnabled(true);
-            BottomCheckbox.setSelected(true);
+            BottomCheckbox.setSelected(false);
             CornerCheckbox.setSelected(false);
         }
     }//GEN-LAST:event_ColourRadio2ActionPerformed
@@ -433,6 +419,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         if (CornerCheckbox.isSelected()){
             GradeSlider.setMinimum(3);
             GradeSlider.setValue(3);
+            BottomCheckbox.setSelected(true);
         }
         else {
             GradeSlider.setMinimum(2);
@@ -441,7 +428,11 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_CornerCheckboxActionPerformed
 
     private void BottomCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BottomCheckboxActionPerformed
-        BottomCheckbox.setSelected(true); 
+        if (!BottomCheckbox.isSelected()){
+            setGradeSlider(2, 5);
+            CornerCheckbox.setSelected(false);
+        }
+        else setGradeSlider(2, 5);
     }//GEN-LAST:event_BottomCheckboxActionPerformed
 
     private void WidthInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_WidthInputKeyTyped
@@ -469,6 +460,20 @@ public class FlexBoxGUI extends javax.swing.JFrame {
             evt.consume();
         }
     }
+    
+    private void disableReinforcments(){
+        BottomCheckbox.setEnabled(false);
+        CornerCheckbox.setEnabled(false);
+        BottomCheckbox.setSelected(false);
+        CornerCheckbox.setSelected(false);
+    }
+    
+    private void setGradeSlider(int min, int max){
+        GradeSlider.setMinimum(min);
+        GradeSlider.setMaximum(max);
+        GradeSlider.setValue(min);
+    }
+    
     
     
     /**
