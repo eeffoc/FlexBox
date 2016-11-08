@@ -15,13 +15,10 @@ public class Main {
         // TODO code application logic here
         FlexBoxGUI frameTest = new FlexBoxGUI();
         frameTest.setVisible(true);
-<<<<<<< HEAD
  
         Order order = new Order();
         order.test();
         // Create new object order as an example test
-=======
         //this is a new line of text
->>>>>>> refs/remotes/origin/gui
     }
 }
