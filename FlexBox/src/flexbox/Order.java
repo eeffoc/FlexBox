@@ -1,18 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package flexbox;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
  * @author Markus
  */
 public class Order {
+    private int orderID;
+    private float totalPriceOfOrder = 0f;
     private List<Box> boxList;
     
     public Order(){
@@ -28,26 +26,39 @@ public class Order {
                 System.out.println("We cannot manufacture boxes with these selected criterias");
             } else {
                 System.out.println("Type: " + boxInList.getBoxType()
-            + "\nWidth (cm): " + boxInList.getBoxWidth()
-            + "\nHeight (cm): " + boxInList.getBoxHeight()
-            + "\nLength (cm): " + boxInList.getBoxLength()
-            + "\nGrade of card: " + boxInList.getGradeOfCard()
-            + "\nColour print: " + boxInList.getColourPrint()
-            + "\nQuantity: " + boxInList.getQuantity()
-            + "\nReinforced bottom: " + boxInList.getReinforcedBottom()
-            + "\nReinforced corners: " + boxInList.getReinforcedCorners()
-            + "\nSealable tops: " + boxInList.getSealableTops()
-            + "\nTotal Price: £" + String.format("%.2f", boxInList.getTotalPrice())
-            + "\nPrice per box: £" + String.format("%.2f", boxInList.getPricePerBox()));
+                + "\nWidth (cm): " + boxInList.getBoxWidth()
+                + "\nHeight (cm): " + boxInList.getBoxHeight()
+                + "\nLength (cm): " + boxInList.getBoxLength()
+                + "\nGrade of card: " + boxInList.getGradeOfCard()
+                + "\nColour print: " + boxInList.getColourPrint()
+                + "\nQuantity: " + boxInList.getQuantity()
+                + "\nReinforced bottom: " + boxInList.getReinforcedBottom()
+                + "\nReinforced corners: " + boxInList.getReinforcedCorners()
+                + "\nSealable tops: " + boxInList.getSealableTops()
+                + "\nPrice per box: £" + String.format("%.2f", boxInList.getPricePerBox())
+                + "\nSubtotal: £" + String.format("%.2f", boxInList.getTotalPrice())
+                + "\n\n");
             }
         }
+        getOrderTotalCost();
+        System.out.println("Total order cost is £" + String.format("%.2f", totalPriceOfOrder)
+        + " for order number " + orderID + ".");
     }
     
     public void makeTestOrder(){ //TODO: change this when out of testing phase
-        boxList = new ArrayList<Box>();
+        Random rand = new Random();
+        orderID = rand.nextInt(9999) + 1000;
+        boxList = new ArrayList<>();
         //TODO: Change hard-coded 1 to a variable of box amount
-        for(int i = 0; i < 1; i++){ //Create objects of class Box per order + add to List
-        boxList.add(new Box(160,260,110,3,0,18,false,false,true)); //TODO: Pull data from GUI when user enters data
+        for(int i = 0; i < 3; i++){ //Create objects of class Box per order + add to List
+            boxList.add(new Box(160,260,110,3,0,18,false,false,true)); //TODO: Pull data from GUI when user enters data
+        }
+    }
+    
+    public void getOrderTotalCost(){
+        for (Box boxInList : boxList) {
+            //Create objects of class Box per order + add to List
+            totalPriceOfOrder += boxInList.getTotalPrice();
         }
     }
     
