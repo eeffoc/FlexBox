@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package layout;
+import flexbox.Order;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,13 +18,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
      * Creates new form FlexBoxGUI
      */
     
-    private int col = 0;
-    private boolean bottom = false;
-    private boolean corners = false;
-    private int grade = 1;
-    private boolean sealableTop = false;
-    private double price = 0;
-    private int quantity = 0;
+    ArrayList values = new ArrayList();
     
     public FlexBoxGUI() {
         initComponents();
@@ -387,8 +383,9 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_AddNewItemWindowClosing
 
     private void CancelButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelButtonMousePressed
-        this.setVisible(true);
-        AddNewItem.setVisible(false);
+//        this.setVisible(true);
+//        AddNewItem.setVisible(false);
+        getTheType();
     }//GEN-LAST:event_CancelButtonMousePressed
 
     private void ColourRadio0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColourRadio0ActionPerformed
@@ -472,6 +469,34 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         GradeSlider.setMinimum(min);
         GradeSlider.setMaximum(max);
         GradeSlider.setValue(min);
+    }
+    
+    private void getChoiceValues(){
+        values.clear();
+        values.add(GradeSlider.getValue());
+        
+        if (ColourRadio0.isSelected()) { values.add(0); }
+        else if (ColourRadio1.isSelected()) { values.add(1); }
+        else { values.add(2); }
+        
+        if (CornerCheckbox.isSelected()) { values.add(true); } else { values.add(false); }
+        if (BottomCheckbox.isSelected()) { values.add(true); } else { values.add(false); }
+        if (SealableCheckbox.isSelected()) { values.add(true); } else { values.add(false); }
+        
+        values.add(Integer.valueOf(LengthInput.getText()));
+        values.add(Integer.valueOf(WidthInput.getText()));
+        values.add(Integer.valueOf(HeightInput.getText()));
+        values.add(Integer.valueOf(QuantityInput.getText()));
+    }
+    
+    private void getTheType(){
+        getChoiceValues();
+        int colour = (int) values.get(1);
+        boolean corners = (boolean) values.get(2);
+        boolean bottom = (boolean) values.get(3);
+        int type;
+        type = Order.calculateBoxType(colour, corners, bottom);
+        System.out.print(type);
     }
     
     
