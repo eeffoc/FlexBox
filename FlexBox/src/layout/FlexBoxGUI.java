@@ -1,28 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package layout;
 import flexbox.Order;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author Markus
- */
+
+
 public class FlexBoxGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form FlexBoxGUI
-     */
+     */  
     
-    ArrayList values = new ArrayList();
+    flexbox.Order ord;
     
-    public FlexBoxGUI() {
+    public FlexBoxGUI(flexbox.Order in) {
         initComponents();
         AddNewItem.setVisible(false);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        ord = in;
     }
 
     /**
@@ -59,13 +56,15 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        AddButton = new javax.swing.JButton();
+        CalculateCostButton = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
-        TotalPriceLabel = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         PriceLabel = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
+        jLabel15 = new javax.swing.JLabel();
+        AddButton1 = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         Label_Main = new javax.swing.JLabel();
         Label_CurrOrd = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -75,12 +74,11 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         Label_TotalSum = new javax.swing.JLabel();
         Button_AddBox = new javax.swing.JButton();
         Button_CheckOut = new javax.swing.JButton();
+        Button_RemoveBox = new javax.swing.JButton();
 
         AddNewItem.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         AddNewItem.setTitle("Add New Item");
-        AddNewItem.setMaximumSize(new java.awt.Dimension(720, 450));
         AddNewItem.setMinimumSize(new java.awt.Dimension(720, 450));
-        AddNewItem.setPreferredSize(new java.awt.Dimension(720, 450));
         AddNewItem.setResizable(false);
         AddNewItem.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -186,6 +184,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         });
         AddNewItem.getContentPane().add(CancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 340, 140, 40));
 
+        QuantityInput.setContentType("int"); // NOI18N
         QuantityInput.setText("1");
         QuantityInput.setAutoscrolls(false);
         QuantityInput.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -193,51 +192,61 @@ public class FlexBoxGUI extends javax.swing.JFrame {
                 QuantityInputKeyTyped(evt);
             }
         });
-        AddNewItem.getContentPane().add(QuantityInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 240, 60, 20));
+        AddNewItem.getContentPane().add(QuantityInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 180, 60, 20));
 
-        WidthInput.setText("0");
+        WidthInput.setContentType("int"); // NOI18N
+        WidthInput.setText("1");
         WidthInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 WidthInputKeyTyped(evt);
             }
         });
-        AddNewItem.getContentPane().add(WidthInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 180, 60, 20));
+        AddNewItem.getContentPane().add(WidthInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 60, 20));
 
-        LengthInput.setText("0");
+        LengthInput.setContentType("int"); // NOI18N
+        LengthInput.setText("1");
         LengthInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 LengthInputKeyTyped(evt);
             }
         });
-        AddNewItem.getContentPane().add(LengthInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 180, 60, 20));
+        AddNewItem.getContentPane().add(LengthInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, 60, 20));
 
-        HeightInput.setText("0");
+        HeightInput.setContentType("int"); // NOI18N
+        HeightInput.setText("1");
         HeightInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 HeightInputKeyTyped(evt);
             }
         });
-        AddNewItem.getContentPane().add(HeightInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 180, 60, 20));
+        AddNewItem.getContentPane().add(HeightInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 180, 60, 20));
 
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("Quantity:");
         jLabel8.setPreferredSize(new java.awt.Dimension(62, 15));
-        AddNewItem.getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 220, 80, -1));
+        AddNewItem.getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 160, 80, -1));
 
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Width:");
-        AddNewItem.getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 160, 80, -1));
+        jLabel1.setText("cm");
+        AddNewItem.getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 180, 30, 20));
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Length:");
-        AddNewItem.getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 160, 80, -1));
+        AddNewItem.getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, 80, -1));
 
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("Height:");
-        AddNewItem.getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 160, 80, -1));
+        AddNewItem.getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 160, 80, -1));
 
-        AddButton.setText("Add To Cart");
-        AddNewItem.getContentPane().add(AddButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 140, 40));
+        CalculateCostButton.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        CalculateCostButton.setText("Calculate");
+        CalculateCostButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                CalculateCostButtonMousePressed(evt);
+            }
+        });
+        AddNewItem.getContentPane().add(CalculateCostButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 170, 90, 30));
 
         jLabel11.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -247,22 +256,36 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         jLabel11.setPreferredSize(new java.awt.Dimension(140, 17));
         AddNewItem.getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, -1, -1));
 
-        TotalPriceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        TotalPriceLabel.setText("£0.00");
-        AddNewItem.getContentPane().add(TotalPriceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 240, 80, 20));
-
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("Total Price:");
-        AddNewItem.getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 220, 240, -1));
-
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("Price:");
-        AddNewItem.getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 160, 240, -1));
-
         PriceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         PriceLabel.setText("£0.00");
-        AddNewItem.getContentPane().add(PriceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 180, 80, 20));
+        AddNewItem.getContentPane().add(PriceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 180, 170, 20));
         AddNewItem.getContentPane().add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 720, 10));
+
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel15.setText("Cost:");
+        AddNewItem.getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 160, 130, -1));
+
+        AddButton1.setText("Add To Cart");
+        AddButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AddButton1MouseClicked(evt);
+            }
+        });
+        AddNewItem.getContentPane().add(AddButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 140, 40));
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Width:");
+        AddNewItem.getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 80, -1));
+
+        jLabel12.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("cm");
+        AddNewItem.getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 180, 30, 20));
+
+        jLabel13.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("cm");
+        AddNewItem.getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 180, 30, 20));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FlexBox");
@@ -270,122 +293,69 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(736, 550));
         setResizable(false);
         setSize(new java.awt.Dimension(736, 550));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Label_Main.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         Label_Main.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Label_Main.setText("FlexBox");
+        getContentPane().add(Label_Main, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 736, -1));
 
         Label_CurrOrd.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         Label_CurrOrd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Label_CurrOrd.setText("Current Order:");
         Label_CurrOrd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        getContentPane().add(Label_CurrOrd, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 46, 736, -1));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 35, 736, 5));
 
         List_CurrOrd.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jScrollPane1.setViewportView(List_CurrOrd);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(68, 75, 600, 300));
+
         Label_Total.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         Label_Total.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Label_Total.setText("Total:");
+        getContentPane().add(Label_Total, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 380, 139, -1));
 
         Label_TotalSum.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         Label_TotalSum.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         Label_TotalSum.setText("£0.00");
+        getContentPane().add(Label_TotalSum, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 380, 138, -1));
 
-        Button_AddBox.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        Button_AddBox.setText("Add To Order");
-        Button_AddBox.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                Button_AddBoxMouseDragged(evt);
-            }
-        });
+        Button_AddBox.setFont(new java.awt.Font("Arial", 0, 19)); // NOI18N
+        Button_AddBox.setText("+");
         Button_AddBox.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Button_AddBoxMouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                Button_AddBoxMousePressed(evt);
             }
         });
+        getContentPane().add(Button_AddBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 80, 45, 45));
 
         Button_CheckOut.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         Button_CheckOut.setText("Check out");
+        getContentPane().add(Button_CheckOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 450, 180, 60));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Label_Main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jSeparator1)
-            .addComponent(Label_CurrOrd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(58, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Label_Total, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Label_TotalSum, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(65, 65, 65))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 613, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(65, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(259, 259, 259)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Button_CheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Button_AddBox, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(Label_Main)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Label_CurrOrd)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_Total)
-                    .addComponent(Label_TotalSum))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Button_AddBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Button_CheckOut)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        Button_RemoveBox.setFont(new java.awt.Font("Arial", 0, 19)); // NOI18N
+        Button_RemoveBox.setText("-");
+        Button_RemoveBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                Button_RemoveBoxMousePressed(evt);
+            }
+        });
+        getContentPane().add(Button_RemoveBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 130, 45, 45));
 
         getAccessibleContext().setAccessibleDescription("Desktop application for placing orders");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Button_AddBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_AddBoxMouseClicked
-        AddNewItem.setVisible(true);
-        this.setVisible(false);
-        GradeSlider.setMinimum(1);
-        GradeSlider.setMaximum(3);
-        GradeSlider.setValue(1);
-        disableReinforcments();
-        ColourRadio0.setSelected(true);
-    }//GEN-LAST:event_Button_AddBoxMouseClicked
-
-    private void Button_AddBoxMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_AddBoxMouseDragged
-        AddNewItem.setVisible(true);
-        this.setVisible(false);
-        GradeSlider.setMinimum(1);
-        GradeSlider.setMaximum(3);
-        GradeSlider.setValue(1);
-        disableReinforcments();
-        ColourRadio0.setSelected(true);
-    }//GEN-LAST:event_Button_AddBoxMouseDragged
-
     private void AddNewItemWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_AddNewItemWindowClosing
         this.setVisible(true);
     }//GEN-LAST:event_AddNewItemWindowClosing
 
     private void CancelButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelButtonMousePressed
-//        this.setVisible(true);
-//        AddNewItem.setVisible(false);
-        getTheType();
+        this.setVisible(true);
+        AddNewItem.setVisible(false);
     }//GEN-LAST:event_CancelButtonMousePressed
 
     private void ColourRadio0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColourRadio0ActionPerformed
@@ -433,26 +403,86 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_BottomCheckboxActionPerformed
 
     private void WidthInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_WidthInputKeyTyped
-        char c = evt.getKeyChar();
-        isNumberInput(c, evt);
+        if (WidthInput.getText().length() <= 5) {
+            isNumberInput(evt);
+        } else evt.consume();
     }//GEN-LAST:event_WidthInputKeyTyped
 
     private void LengthInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LengthInputKeyTyped
-        char c = evt.getKeyChar();
-        isNumberInput(c, evt);
+        if (LengthInput.getText().length() <= 5) {
+            isNumberInput(evt);
+        } else evt.consume();
     }//GEN-LAST:event_LengthInputKeyTyped
 
     private void HeightInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HeightInputKeyTyped
-        char c = evt.getKeyChar();
-        isNumberInput(c, evt);
+        if (HeightInput.getText().length() <= 5) {
+            isNumberInput(evt);
+        } else evt.consume();
     }//GEN-LAST:event_HeightInputKeyTyped
 
     private void QuantityInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_QuantityInputKeyTyped
-        char c = evt.getKeyChar();
-        isNumberInput(c, evt);
+        if (QuantityInput.getText().length() <= 5) {
+            isNumberInput(evt);
+        } else evt.consume();
     }//GEN-LAST:event_QuantityInputKeyTyped
 
-    private void isNumberInput(char c, java.awt.event.KeyEvent evt){
+    private void CalculateCostButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CalculateCostButtonMousePressed
+        ord.setPriceLabel();
+    }//GEN-LAST:event_CalculateCostButtonMousePressed
+
+    private void AddButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddButton1MouseClicked
+        confirmBox();
+    }//GEN-LAST:event_AddButton1MouseClicked
+
+    private void Button_RemoveBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_RemoveBoxMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Button_RemoveBoxMousePressed
+
+    private void Button_AddBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_AddBoxMousePressed
+        AddNewItem.setLocationRelativeTo(null);
+        AddNewItem.setVisible(true);
+        this.setVisible(false);
+        GradeSlider.setMinimum(1);
+        GradeSlider.setMaximum(3);
+        GradeSlider.setValue(1);
+        disableReinforcments();
+        ColourRadio0.setSelected(true);
+        WidthInput.setText("0");
+        HeightInput.setText("0");
+        LengthInput.setText("0");
+        QuantityInput.setText("1");
+        PriceLabel.setText("£0.00");
+        SealableCheckbox.setSelected(false);
+    }//GEN-LAST:event_Button_AddBoxMousePressed
+
+    private void confirmBox()
+    {
+        double price = ord.calculatePrice();
+        if (price < 0.01){
+            JOptionPane.showConfirmDialog(null, "The Selected Options for a box"
+                    + " can not be provided.\n Please change the properties and "
+                    + "try again.", "ERROR", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            String text = "Add the following (" + ord.getCurrentBoxQuantity() + ") box(-es) to your order:\n"
+                    + "Width: " + ord.getCurrentBoxWidth() + "cm\n"
+                    + "Height: " + ord.getCurrentBoxHeight() + "cm\n"
+                    + "Length: " + ord.getCurrentBoxLength() + "cm\n"
+                    + "Grade: " + ord.getCurrentBoxGrade() + "\n"
+                    + "Reinforced Corners: " + ord.hasThickCorners() + "\n"
+                    + "Reinforced Bottom: " + ord.hasThickBottom() + "\n"
+                    + "Sealable: " + ord.isCurrentBoxSealable() + "\n\n Total: £" + price;
+            int dialogResult = JOptionPane.showConfirmDialog(null, text, "Confirm Box(-es)", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if(dialogResult == JOptionPane.OK_OPTION){
+                this.setVisible(true);
+                AddNewItem.setVisible(false);
+                //TO DO: Add Boxes to order.
+            }
+        }
+    }
+    
+    private void isNumberInput(java.awt.event.KeyEvent evt){
+        char c = evt.getKeyChar();
         if (!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || (c==KeyEvent.VK_DELETE))){
             evt.consume();
         }
@@ -471,7 +501,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         GradeSlider.setValue(min);
     }
     
-    private void getChoiceValues(){
+    public void getChoiceValues(ArrayList values){
         values.clear();
         values.add(GradeSlider.getValue());
         
@@ -489,59 +519,24 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         values.add(Integer.valueOf(QuantityInput.getText()));
     }
     
-    private void getTheType(){
-        getChoiceValues();
-        int colour = (int) values.get(1);
-        boolean corners = (boolean) values.get(2);
-        boolean bottom = (boolean) values.get(3);
-        int type;
-        type = Order.calculateBoxType(colour, corners, bottom);
-        System.out.print(type);
-    }
-    
-    
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FlexBoxGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FlexBoxGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FlexBoxGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FlexBoxGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FlexBoxGUI().setVisible(true);
-            }
-        });
+    public void emptyFieldError(){
+        String message = "One or a few of the following fields are empty:\n"
+                + "Width\n"
+                + "Length\n"
+                + "Height\n"
+                + "Quantity\n\n"
+                + "Please check your input and try again.";
+        JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AddButton;
+    private javax.swing.JButton AddButton1;
     private javax.swing.JFrame AddNewItem;
     private javax.swing.JCheckBox BottomCheckbox;
     private javax.swing.JButton Button_AddBox;
     private javax.swing.JButton Button_CheckOut;
+    private javax.swing.JButton Button_RemoveBox;
+    private javax.swing.JButton CalculateCostButton;
     private javax.swing.JButton CancelButton;
     private javax.swing.ButtonGroup ColourButtons;
     private javax.swing.JRadioButton ColourRadio0;
@@ -549,23 +544,23 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     private javax.swing.JRadioButton ColourRadio2;
     private javax.swing.JCheckBox CornerCheckbox;
     private javax.swing.JSlider GradeSlider;
-    private javax.swing.JEditorPane HeightInput;
+    public javax.swing.JEditorPane HeightInput;
     private javax.swing.JLabel Label_CurrOrd;
     private javax.swing.JLabel Label_Main;
     private javax.swing.JLabel Label_Total;
     private javax.swing.JLabel Label_TotalSum;
-    private javax.swing.JEditorPane LengthInput;
+    public javax.swing.JEditorPane LengthInput;
     private javax.swing.JList<String> List_CurrOrd;
-    private javax.swing.JLabel PriceLabel;
-    private javax.swing.JEditorPane QuantityInput;
+    public javax.swing.JLabel PriceLabel;
+    public javax.swing.JEditorPane QuantityInput;
     private javax.swing.JCheckBox SealableCheckbox;
-    private javax.swing.JLabel TotalPriceLabel;
-    private javax.swing.JEditorPane WidthInput;
+    public javax.swing.JEditorPane WidthInput;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -573,10 +568,12 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     // End of variables declaration//GEN-END:variables
+
 }
