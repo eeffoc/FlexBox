@@ -1,119 +1,161 @@
 package flexbox;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author Markus
- */
-public class Order {
-    private int orderID;
-    private float totalPriceOfOrder = 0f;
-    private List<Box> boxList;
+public class Order{
+//    ArrayList<Box> boxList = new ArrayList<Box>( );
+//    private float totalPriceOfOrder = 0f;
     
-    public Order(){
+    layout.FlexBoxGUI gui = new layout.FlexBoxGUI(this);
+    
+    
+    public Order() { 
         
     }
     
-    public void test(){
-        makeTestOrder();
-        for (Box boxInList : boxList) {
-            boxInList.setBoxType(getTypeOfBox(boxInList));
-            setBoxPrice(boxInList);
-            if(boxInList.getBoxType() == 0){
-                System.out.println("We cannot manufacture boxes with these selected criterias");
-            } else {
-                System.out.println("Type: " + boxInList.getBoxType()
-                + "\nWidth (cm): " + boxInList.getBoxWidth()
-                + "\nHeight (cm): " + boxInList.getBoxHeight()
-                + "\nLength (cm): " + boxInList.getBoxLength()
-                + "\nGrade of card: " + boxInList.getGradeOfCard()
-                + "\nColour print: " + boxInList.getColourPrint()
-                + "\nQuantity: " + boxInList.getQuantity()
-                + "\nReinforced bottom: " + boxInList.getReinforcedBottom()
-                + "\nReinforced corners: " + boxInList.getReinforcedCorners()
-                + "\nSealable tops: " + boxInList.getSealableTops()
-                + "\nPrice per box: £" + String.format("%.2f", boxInList.getPricePerBox())
-                + "\nSubtotal: £" + String.format("%.2f", boxInList.getTotalPrice())
-                + "\n\n");
-            }
-        }
-        getOrderTotalCost();
-        System.out.println("Total order cost is £" + String.format("%.2f", totalPriceOfOrder)
-        + " for order number " + orderID + ".");
+    public void setPriceLabel() {
+        double price = calculatePrice();
+        String formattedPrice = "£" + price;
+        gui.PriceLabel.setText(formattedPrice);
     }
     
-    public void makeTestOrder(){ //TODO: change this when out of testing phase
-        Random rand = new Random();
-        orderID = rand.nextInt(9999) + 1000;
-        boxList = new ArrayList<>();
-        //TODO: Change hard-coded 1 to a variable of box amount
-        for(int i = 0; i < 3; i++){ //Create objects of class Box per order + add to List
-            boxList.add(new Box(160,260,110,3,0,18,false,false,true)); //TODO: Pull data from GUI when user enters data
-        }
-    }
-    
-    public void getOrderTotalCost(){
-        for (Box boxInList : boxList) {
-            //Create objects of class Box per order + add to List
-            totalPriceOfOrder += boxInList.getTotalPrice();
-        }
-    }
-    
-    public int getTypeOfBox(Box box){
-        switch (box.getColourPrint()){
+    private int getTheType(){
+        ArrayList values = new ArrayList();
+        gui.getChoiceValues(values);
+        
+        int colour = (int) values.get(1);
+        boolean corners = hasThickCorners();
+        boolean bottom = hasThickBottom();
+        
+        int sum = colour;
+        if (bottom) sum+=10;
+        if (corners) sum+=100;
+        
+        switch (sum) {
             case 0:
                 return 1;
             case 1:
                 return 2;
             case 2:
-                if (!box.getReinforcedBottom() && !box.getReinforcedCorners()){
-                    return 3;
-                } else if (box.getReinforcedBottom() && !box.getReinforcedCorners()){
-                    return 4;
-                } else if (box.getReinforcedBottom() && box.getReinforcedCorners()){
-                    return 5;
-                }  else {
-                    return 0; //Type of Box not available
-                }
-            }
-        return 0; //Type of Box not available (or error occured)
+                return 3;
+            default:
+                if (sum < 100) return 4; else return 5;   
+        }
     }
     
-    public void setBoxPrice(Box box){
-        float areaOfBoxMetreSquared = (2 * (box.getBoxLength() * box.getBoxWidth()) +
-                2 * (box.getBoxLength() * box.getBoxHeight()) + 2 * (box.getBoxWidth() * box.getBoxHeight()))
-                / 10000f; // Change from cm2 to m2
-        float additionalCost = 1f; //This is a multipler thus starts at 1
+    public boolean hasThickCorners(){
+        ArrayList values = new ArrayList();
+        gui.getChoiceValues(values);
+        return (boolean) values.get(2);  
+    }
+    
+    public boolean hasThickBottom(){
+        ArrayList values = new ArrayList();
+        gui.getChoiceValues(values);
+        return (boolean) values.get(3);  
+    }
+    
+    public int getCurrentBoxLength(){
+        int value = fetchDimensionData(5);
+        return value;
+    }
+    
+    public int getCurrentBoxWidth(){
+        int value = fetchDimensionData(6);
+        return value;
+    }
+    
+    public int getCurrentBoxHeight(){
+        int value = fetchDimensionData(7);
+        return value;
+    }
+    
+    public int getCurrentBoxQuantity(){
+        int value = fetchDimensionData(8);
+        return value;
+    }
+    
+    public int getCurrentBoxGrade(){
+        int value = fetchDimensionData(0);
+        return value;
+    }
+    
+    public boolean isCurrentBoxSealable(){
+        ArrayList values = new ArrayList();
+        gui.getChoiceValues(values);
+        return (boolean) values.get(4);   
+    }
+    
+    private int fetchDimensionData(int field) {
+        ArrayList values = new ArrayList();
+        try {
+            gui.getChoiceValues(values);
+            return (int) values.get(field);
+        }
+        catch (java.lang.NumberFormatException e ){
+            gui.emptyFieldError();
+            return 0;
+        }
+    }
+    
+    public double calculatePrice() {
+        double price = 0;
         
-        if(box.getColourPrint() == 1) additionalCost += 0.13;
-        if(box.getColourPrint() == 2) additionalCost += 0.16;
-        if(box.getReinforcedBottom()) additionalCost += 0.14;
-        if(box.getReinforcedCorners()) additionalCost += 0.1;
-        if(box.getSealableTops()) additionalCost += 0.08;
+        double length = getCurrentBoxLength();
+        double width = getCurrentBoxWidth();
+        double height = getCurrentBoxHeight();
+        double quantity = getCurrentBoxQuantity();
+        double surfaceArea = (2 * width * length + 2 * length * height + 2 * width * height) / 10000;
         
-        float costPerMetreSquared = 0f;
-        switch(box.getGradeOfCard()){
+        boolean sealable = isCurrentBoxSealable();
+       
+        switch ((int) getCurrentBoxGrade()){
             case 1:
-                costPerMetreSquared = 0.5f;
+                price = surfaceArea * 0.5;
                 break;
             case 2:
-                costPerMetreSquared = 0.6f;
+                price = surfaceArea * 0.6;
                 break;
             case 3:
-                costPerMetreSquared = 0.72f;
+                price = surfaceArea * 0.72;
                 break;
             case 4:
-                costPerMetreSquared = 0.9f;
+                price = surfaceArea * 0.9;
                 break;
             case 5:
-                costPerMetreSquared = 1.4f;
+                price = surfaceArea * 1.4;
                 break;
         }
         
-        box.setPricePerBox((areaOfBoxMetreSquared * costPerMetreSquared) * additionalCost);
-        box.setTotalPrice(box.getPricePerBox() * box.getQuantity());
+        double priceIncreasePercentage = 1;
+        if (sealable){
+            priceIncreasePercentage += 0.08;
+        }
+        
+        
+        switch ((int) getTheType()){
+            case 2:
+                priceIncreasePercentage += 0.13;
+                break;
+            case 3:
+                priceIncreasePercentage += 0.16;
+                break;
+            case 4:
+                priceIncreasePercentage += 0.30;
+                break;
+            case 5:
+                priceIncreasePercentage += 0.40;
+                break;
+            default:
+                priceIncreasePercentage += 0;
+                break;
+        }
+        
+        price = priceIncreasePercentage * price * quantity;
+        return Double.valueOf(new DecimalFormat("#0.00").format(price));
     }
+
+    
 }
