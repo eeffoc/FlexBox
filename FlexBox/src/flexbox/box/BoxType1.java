@@ -1,24 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package flexbox.box;
 
-/**
- *
- * @author Markus
- */
-public class BoxType1 extends BoxType{
+public class BoxType1 extends Box{
+    float multiplier = 0f;
     
-    
-    public BoxType1(){
-    
+    public BoxType1(int width, 
+                    int height, 
+                    int length, 
+                    int grade, 
+                    int quantity,
+                    boolean sealableTops){
+        super(width, height, length, grade, quantity, sealableTops);
+        setType(1);
+        setColour(0);
+        setReinforcements(false, false);
     }
 
-    @Override
-    public float getAddtionalCostMultipler() {
-        return 1f + getSealableTopsAdditionalCost();
+    public float getTypeMultiplier() {
+        return multiplier;
     }
     
 }

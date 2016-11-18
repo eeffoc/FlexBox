@@ -2,6 +2,7 @@ package layout;
 import flexbox.Order;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 
@@ -68,13 +69,12 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         Label_Main = new javax.swing.JLabel();
         Label_CurrOrd = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        List_CurrOrd = new javax.swing.JList<>();
         Label_Total = new javax.swing.JLabel();
         Label_TotalSum = new javax.swing.JLabel();
         Button_AddBox = new javax.swing.JButton();
         Button_CheckOut = new javax.swing.JButton();
         Button_RemoveBox = new javax.swing.JButton();
+        orderBoxList = new java.awt.List();
 
         AddNewItem.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         AddNewItem.setTitle("Add New Item");
@@ -307,11 +307,6 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         getContentPane().add(Label_CurrOrd, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 46, 736, -1));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 35, 736, 5));
 
-        List_CurrOrd.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jScrollPane1.setViewportView(List_CurrOrd);
-
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(68, 75, 600, 300));
-
         Label_Total.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         Label_Total.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Label_Total.setText("Total:");
@@ -338,11 +333,15 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         Button_RemoveBox.setFont(new java.awt.Font("Arial", 0, 19)); // NOI18N
         Button_RemoveBox.setText("-");
         Button_RemoveBox.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                Button_RemoveBoxMousePressed(evt);
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Button_RemoveBoxMouseClicked(evt);
             }
         });
         getContentPane().add(Button_RemoveBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 130, 45, 45));
+
+        orderBoxList.setBackground(new java.awt.Color(255, 255, 255));
+        orderBoxList.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(orderBoxList, new org.netbeans.lib.awtextra.AbsoluteConstraints(68, 80, 600, 290));
 
         getAccessibleContext().setAccessibleDescription("Desktop application for placing orders");
 
@@ -434,10 +433,6 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         confirmBox();
     }//GEN-LAST:event_AddButton1MouseClicked
 
-    private void Button_RemoveBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_RemoveBoxMousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Button_RemoveBoxMousePressed
-
     private void Button_AddBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_AddBoxMousePressed
         AddNewItem.setLocationRelativeTo(null);
         AddNewItem.setVisible(true);
@@ -453,7 +448,12 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         QuantityInput.setText("1");
         PriceLabel.setText("£0.00");
         SealableCheckbox.setSelected(false);
+        
     }//GEN-LAST:event_Button_AddBoxMousePressed
+
+    private void Button_RemoveBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_RemoveBoxMouseClicked
+        ord.removeFromOrderList();
+    }//GEN-LAST:event_Button_RemoveBoxMouseClicked
 
     private void confirmBox()
     {
@@ -476,7 +476,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
             if(dialogResult == JOptionPane.OK_OPTION){
                 this.setVisible(true);
                 AddNewItem.setVisible(false);
-                //TO DO: Add Boxes to order.
+                ord.addBoxToOrder();
             }
         }
     }
@@ -550,7 +550,6 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     private javax.swing.JLabel Label_Total;
     private javax.swing.JLabel Label_TotalSum;
     public javax.swing.JEditorPane LengthInput;
-    private javax.swing.JList<String> List_CurrOrd;
     public javax.swing.JLabel PriceLabel;
     public javax.swing.JEditorPane QuantityInput;
     private javax.swing.JCheckBox SealableCheckbox;
@@ -569,11 +568,11 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    public java.awt.List orderBoxList;
     // End of variables declaration//GEN-END:variables
 
 }

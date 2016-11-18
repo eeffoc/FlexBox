@@ -2,11 +2,11 @@ package flexbox;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
+import flexbox.box.*;
+import java.awt.PopupMenu;
 
 public class Order{
-//    ArrayList<Box> boxList = new ArrayList<Box>( );
-//    private float totalPriceOfOrder = 0f;
+    ArrayList<Box> boxList = new ArrayList<Box>();
     
     layout.FlexBoxGUI gui = new layout.FlexBoxGUI(this);
     
@@ -157,5 +157,63 @@ public class Order{
         return Double.valueOf(new DecimalFormat("#0.00").format(price));
     }
 
+    public void addBoxToOrder(){
+        int width = getCurrentBoxWidth();
+        int height = getCurrentBoxHeight();
+        int length = getCurrentBoxLength();
+        int quantity = getCurrentBoxQuantity();
+        int grade = getCurrentBoxGrade();
+        boolean sealable = isCurrentBoxSealable();
+        
+        switch (getTheType()){
+            case 1:
+                boxList.add(new BoxType1(width, height, length, grade, quantity, sealable));
+                addToOrderList();
+            case 2:
+                boxList.add(new BoxType2(width, height, length, grade, quantity, sealable));
+                addToOrderList();
+                break;
+            case 3:
+                boxList.add(new BoxType3(width, height, length, grade, quantity, sealable));
+                addToOrderList();
+                break;
+            case 4:
+                boxList.add(new BoxType4(width, height, length, grade, quantity, sealable));
+                addToOrderList();
+                break;
+            case 5:
+                boxList.add(new BoxType5(width, height, length, grade, quantity, sealable));
+                addToOrderList();
+                break;
+        }
+    }
     
+    public void addToOrderList(){
+        Box newBox = boxList.get(boxList.size() - 1);
+        String formattedDescription = "" + newBox.getQuantity() + " Boxes|";
+        if (newBox.getSealableTops()) formattedDescription += "Sealable|";
+        formattedDescription +=  
+                  "W: " + newBox.getWidth() + "cm|"
+                + "L: " + newBox.getLength() + "cm|" 
+                + "H: " + newBox.getHeight() + "cm|"
+                + "Grade: " + newBox.getGrade() + "|";
+        if (newBox.getColour() == 0) formattedDescription += "No";
+        else formattedDescription += newBox.getColour();
+        formattedDescription += " Colour(s)|";
+        if (newBox.getReinforcedBottom()) formattedDescription += "\nReinforced Bottoms|";
+        if (newBox.getReinforcedCorners()) formattedDescription += "Reinforced Corners|";
+        formattedDescription += "Total: £" 
+                + newBox.getTotalPrice()
+                + " (£" + newBox.getPricePerBox()
+                + "ppi).";
+        gui.orderBoxList.add(formattedDescription);
+    }
+    
+    public void removeFromOrderList(){
+        int a[] = gui.orderBoxList.getSelectedIndexes();
+        for (int i = 0; i < a.length; i++){
+            gui.orderBoxList.remove(a[i]);
+            boxList.remove(a[i]);
+        }
+    }
 }
