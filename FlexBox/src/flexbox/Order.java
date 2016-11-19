@@ -4,11 +4,15 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import flexbox.box.*;
 import java.awt.PopupMenu;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 public class Order{
     ArrayList<Box> boxList = new ArrayList<Box>();
     
     layout.FlexBoxGUI gui = new layout.FlexBoxGUI(this);
+    
+    private double orderSum = 0.00;
     
     
     public Order() { 
@@ -188,32 +192,51 @@ public class Order{
         }
     }
     
+    private void updateOrderTotal(){
+        DecimalFormat round = new DecimalFormat("#.##");
+        gui.Label_TotalSum.setText("£" + round.format(orderSum));
+    }
+    
     public void addToOrderList(){
+        DecimalFormat round = new DecimalFormat("#.##");
+        
         Box newBox = boxList.get(boxList.size() - 1);
-        String formattedDescription = "" + newBox.getQuantity() + " Boxes|";
-        if (newBox.getSealableTops()) formattedDescription += "Sealable|";
-        formattedDescription +=  
-                  "W: " + newBox.getWidth() + "cm|"
-                + "L: " + newBox.getLength() + "cm|" 
-                + "H: " + newBox.getHeight() + "cm|"
-                + "Grade: " + newBox.getGrade() + "|";
-        if (newBox.getColour() == 0) formattedDescription += "No";
-        else formattedDescription += newBox.getColour();
-        formattedDescription += " Colour(s)|";
-        if (newBox.getReinforcedBottom()) formattedDescription += "\nReinforced Bottoms|";
-        if (newBox.getReinforcedCorners()) formattedDescription += "Reinforced Corners|";
-        formattedDescription += "Total: £" 
-                + newBox.getTotalPrice()
-                + " (£" + newBox.getPricePerBox()
-                + "ppi).";
-        gui.orderBoxList.add(formattedDescription);
+        
+        DefaultTableModel model = (DefaultTableModel) gui.OrderTable.getModel();
+        
+        String colours;
+        switch (newBox.getColour()){
+            case 1:
+                colours = "Single";
+                break;
+            case 2:
+                colours = "Double";
+                break;
+            default:
+                colours = "No";
+                break;
+        }
+        
+        model.addRow(new Object[]{newBox.getQuantity(), 
+            newBox.getGrade(), newBox.getWidth(), newBox.getLength(), 
+            newBox.getHeight(), colours, newBox.isReinforcedBottom(), 
+            newBox.isReinforcedCorners(), newBox.isBoxSealable(), 
+            round.format(newBox.calculatePricePerBox()), 
+            round.format(newBox.calculateTotalPrice())});
+        
+        orderSum += newBox.calculateTotalPrice();
+        updateOrderTotal();
+        
     }
     
     public void removeFromOrderList(){
-        int a[] = gui.orderBoxList.getSelectedIndexes();
-        for (int i = 0; i < a.length; i++){
-            gui.orderBoxList.remove(a[i]);
-            boxList.remove(a[i]);
-        }
+        Box newBox = boxList.get(gui.OrderTable.getSelectedRow());
+        orderSum -= newBox.calculateTotalPrice();
+        
+        boxList.remove(gui.OrderTable.getSelectedRow());
+        DefaultTableModel model = (DefaultTableModel) gui.OrderTable.getModel();
+        model.removeRow(gui.OrderTable.getSelectedRow());
+        
+        updateOrderTotal();
     }
 }

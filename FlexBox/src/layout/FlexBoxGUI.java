@@ -1,9 +1,8 @@
 package layout;
-import flexbox.Order;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 
 
@@ -21,6 +20,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         ord = in;
+        
     }
 
     /**
@@ -74,12 +74,14 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         Button_AddBox = new javax.swing.JButton();
         Button_CheckOut = new javax.swing.JButton();
         Button_RemoveBox = new javax.swing.JButton();
-        orderBoxList = new java.awt.List();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        OrderTable = new javax.swing.JTable();
 
         AddNewItem.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         AddNewItem.setTitle("Add New Item");
         AddNewItem.setMinimumSize(new java.awt.Dimension(720, 450));
         AddNewItem.setResizable(false);
+        AddNewItem.setSize(new java.awt.Dimension(720, 380));
         AddNewItem.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 AddNewItemWindowClosing(evt);
@@ -267,8 +269,8 @@ public class FlexBoxGUI extends javax.swing.JFrame {
 
         AddButton1.setText("Add To Cart");
         AddButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AddButton1MouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                AddButton1MousePressed(evt);
             }
         });
         AddNewItem.getContentPane().add(AddButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 140, 40));
@@ -290,58 +292,101 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FlexBox");
         setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        setPreferredSize(new java.awt.Dimension(736, 550));
+        setMaximumSize(new java.awt.Dimension(1000, 550));
+        setMinimumSize(new java.awt.Dimension(1000, 550));
+        setPreferredSize(new java.awt.Dimension(1000, 550));
         setResizable(false);
-        setSize(new java.awt.Dimension(736, 550));
+        setSize(new java.awt.Dimension(1000, 550));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Label_Main.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         Label_Main.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Label_Main.setText("FlexBox");
-        getContentPane().add(Label_Main, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 736, -1));
+        getContentPane().add(Label_Main, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, -1));
 
         Label_CurrOrd.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         Label_CurrOrd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Label_CurrOrd.setText("Current Order:");
         Label_CurrOrd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        getContentPane().add(Label_CurrOrd, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 46, 736, -1));
-        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 35, 736, 5));
+        getContentPane().add(Label_CurrOrd, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 46, 1000, -1));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 35, 1000, -1));
 
-        Label_Total.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        Label_Total.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         Label_Total.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Label_Total.setText("Total:");
-        getContentPane().add(Label_Total, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 380, 139, -1));
+        getContentPane().add(Label_Total, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 360, 139, -1));
 
-        Label_TotalSum.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        Label_TotalSum.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         Label_TotalSum.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         Label_TotalSum.setText("£0.00");
-        getContentPane().add(Label_TotalSum, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 380, 138, -1));
+        getContentPane().add(Label_TotalSum, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 360, 138, -1));
 
-        Button_AddBox.setFont(new java.awt.Font("Arial", 0, 19)); // NOI18N
-        Button_AddBox.setText("+");
+        Button_AddBox.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        Button_AddBox.setText("Add To Order");
         Button_AddBox.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 Button_AddBoxMousePressed(evt);
             }
         });
-        getContentPane().add(Button_AddBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 80, 45, 45));
+        getContentPane().add(Button_AddBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 150, 45));
 
-        Button_CheckOut.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        Button_CheckOut.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         Button_CheckOut.setText("Check out");
-        getContentPane().add(Button_CheckOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 450, 180, 60));
+        getContentPane().add(Button_CheckOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 450, 300, 40));
 
-        Button_RemoveBox.setFont(new java.awt.Font("Arial", 0, 19)); // NOI18N
-        Button_RemoveBox.setText("-");
+        Button_RemoveBox.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        Button_RemoveBox.setText("Remove Selected");
         Button_RemoveBox.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Button_RemoveBoxMouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                Button_RemoveBoxMousePressed(evt);
             }
         });
-        getContentPane().add(Button_RemoveBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 130, 45, 45));
+        getContentPane().add(Button_RemoveBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 45));
 
-        orderBoxList.setBackground(new java.awt.Color(255, 255, 255));
-        orderBoxList.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(orderBoxList, new org.netbeans.lib.awtextra.AbsoluteConstraints(68, 80, 600, 290));
+        OrderTable.setAutoCreateRowSorter(true);
+        OrderTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Quantity", "Grade", "Width", "Length", "Height", "Coloured", "Bottom", "Corners", "Sealable", "PPI", "Total"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        OrderTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        OrderTable.setShowVerticalLines(false);
+        OrderTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(OrderTable);
+        OrderTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (OrderTable.getColumnModel().getColumnCount() > 0) {
+            OrderTable.getColumnModel().getColumn(0).setResizable(false);
+            OrderTable.getColumnModel().getColumn(1).setResizable(false);
+            OrderTable.getColumnModel().getColumn(2).setResizable(false);
+            OrderTable.getColumnModel().getColumn(3).setResizable(false);
+            OrderTable.getColumnModel().getColumn(4).setResizable(false);
+            OrderTable.getColumnModel().getColumn(5).setResizable(false);
+            OrderTable.getColumnModel().getColumn(6).setResizable(false);
+            OrderTable.getColumnModel().getColumn(7).setResizable(false);
+            OrderTable.getColumnModel().getColumn(8).setResizable(false);
+            OrderTable.getColumnModel().getColumn(9).setResizable(false);
+            OrderTable.getColumnModel().getColumn(10).setResizable(false);
+        }
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 990, 280));
 
         getAccessibleContext().setAccessibleDescription("Desktop application for placing orders");
 
@@ -429,10 +474,6 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         ord.setPriceLabel();
     }//GEN-LAST:event_CalculateCostButtonMousePressed
 
-    private void AddButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddButton1MouseClicked
-        confirmBox();
-    }//GEN-LAST:event_AddButton1MouseClicked
-
     private void Button_AddBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_AddBoxMousePressed
         AddNewItem.setLocationRelativeTo(null);
         AddNewItem.setVisible(true);
@@ -451,9 +492,13 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_Button_AddBoxMousePressed
 
-    private void Button_RemoveBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_RemoveBoxMouseClicked
+    private void Button_RemoveBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_RemoveBoxMousePressed
         ord.removeFromOrderList();
-    }//GEN-LAST:event_Button_RemoveBoxMouseClicked
+    }//GEN-LAST:event_Button_RemoveBoxMousePressed
+
+    private void AddButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddButton1MousePressed
+        confirmBox();
+    }//GEN-LAST:event_AddButton1MousePressed
 
     private void confirmBox()
     {
@@ -548,8 +593,9 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     private javax.swing.JLabel Label_CurrOrd;
     private javax.swing.JLabel Label_Main;
     private javax.swing.JLabel Label_Total;
-    private javax.swing.JLabel Label_TotalSum;
+    public javax.swing.JLabel Label_TotalSum;
     public javax.swing.JEditorPane LengthInput;
+    public javax.swing.JTable OrderTable;
     public javax.swing.JLabel PriceLabel;
     public javax.swing.JEditorPane QuantityInput;
     private javax.swing.JCheckBox SealableCheckbox;
@@ -568,11 +614,11 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    public javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
-    public java.awt.List orderBoxList;
     // End of variables declaration//GEN-END:variables
 
 }

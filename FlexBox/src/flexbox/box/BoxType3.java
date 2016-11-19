@@ -1,19 +1,28 @@
 package flexbox.box;
 
 public class BoxType3 extends Box{
-    float multiplier = 0.16f;
     
-    public BoxType3(int width, int height, int length, 
-            int grade, int quantity,
-            boolean sealableTops){
-        super(width, height, length, grade, quantity, sealableTops);
-        setType(3);
-        setColour(2);
-        setReinforcements(false, false);
+    public BoxType3(int width, int height, int length, int grade, int quantity,
+                    boolean sealableTops){
+        
+        super(width, height, length, 3, grade, 2, quantity, sealableTops, false, false);
     }
 
-    public float getTypeMultiplier() {
-        return multiplier;
+    @Override
+    public double calculatePricePerBox() {
+        double price;
+        price = getBoxSizeInMeters() * getGradeMultiplier();
+        double multiplier = 1.16;
+        if (this.sealableTops) multiplier += 0.08;
+        price *= multiplier;
+        this.setPricePerBox(price);
+        return price;
     }
     
+    @Override
+    public double calculateTotalPrice(){
+        double totalPrice = this.pricePerBox * this.quantity;
+        this.setTotalPrice(totalPrice);
+        return totalPrice;
+    }
 }
