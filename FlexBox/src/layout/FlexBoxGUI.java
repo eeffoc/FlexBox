@@ -8,17 +8,26 @@ import javax.swing.JTable;
 
 public class FlexBoxGUI extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FlexBoxGUI
-     */  
-    
+     
+    //Used for refferencing the Order class as being the super class.
     flexbox.Order ord;
     
+    /**
+     * Creates new form FlexBoxGUI
+     */ 
     public FlexBoxGUI(flexbox.Order in) {
-        initComponents();
-        AddNewItem.setVisible(false);
+        initComponents(); //Initiates components.
+        
+        //Add a new Item GUI is hidden untill user clicks "Add to Order" button.
+        AddNewItem.setVisible(false); 
+        
+        //When given the parameter "null" - GUI gets positioned in the center.
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        
+        /*
+            Refference Order class as super class. To call the methods from Order.
+        */
         ord = in;
         
     }
@@ -62,7 +71,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         PriceLabel = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
         jLabel15 = new javax.swing.JLabel();
-        AddButton1 = new javax.swing.JButton();
+        AddButton = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -180,8 +189,8 @@ public class FlexBoxGUI extends javax.swing.JFrame {
 
         CancelButton.setText("Cancel");
         CancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                CancelButtonMousePressed(evt);
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CancelButtonMouseClicked(evt);
             }
         });
         AddNewItem.getContentPane().add(CancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 340, 140, 40));
@@ -267,13 +276,13 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         jLabel15.setText("Cost:");
         AddNewItem.getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 160, 130, -1));
 
-        AddButton1.setText("Add To Cart");
-        AddButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                AddButton1MousePressed(evt);
+        AddButton.setText("Add To Cart");
+        AddButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AddButtonMouseClicked(evt);
             }
         });
-        AddNewItem.getContentPane().add(AddButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 140, 40));
+        AddNewItem.getContentPane().add(AddButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 140, 40));
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Width:");
@@ -397,11 +406,6 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         this.setVisible(true);
     }//GEN-LAST:event_AddNewItemWindowClosing
 
-    private void CancelButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelButtonMousePressed
-        this.setVisible(true);
-        AddNewItem.setVisible(false);
-    }//GEN-LAST:event_CancelButtonMousePressed
-
     private void ColourRadio0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColourRadio0ActionPerformed
         if (ColourRadio0.isSelected()){
             setGradeSlider(1, 3);
@@ -447,45 +451,50 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_BottomCheckboxActionPerformed
 
     private void WidthInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_WidthInputKeyTyped
-        if (WidthInput.getText().length() <= 5) {
+        if (WidthInput.getText().length() <= 3) {
             isNumberInput(evt);
         } else evt.consume();
     }//GEN-LAST:event_WidthInputKeyTyped
 
     private void LengthInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LengthInputKeyTyped
-        if (LengthInput.getText().length() <= 5) {
+        if (LengthInput.getText().length() <= 3) {
             isNumberInput(evt);
         } else evt.consume();
     }//GEN-LAST:event_LengthInputKeyTyped
 
     private void HeightInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HeightInputKeyTyped
-        if (HeightInput.getText().length() <= 5) {
+        if (HeightInput.getText().length() <= 3) {
             isNumberInput(evt);
         } else evt.consume();
     }//GEN-LAST:event_HeightInputKeyTyped
 
     private void QuantityInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_QuantityInputKeyTyped
-        if (QuantityInput.getText().length() <= 5) {
+        if (QuantityInput.getText().length() <= 3) {
             isNumberInput(evt);
         } else evt.consume();
     }//GEN-LAST:event_QuantityInputKeyTyped
 
     private void CalculateCostButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CalculateCostButtonMousePressed
-        ord.setPriceLabel();
+        if (ord.isInputValid()) {
+            double price = ord.calculatePrice();
+            ord.setPriceLabel(price);
+        }
     }//GEN-LAST:event_CalculateCostButtonMousePressed
 
     private void Button_AddBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_AddBoxMousePressed
         AddNewItem.setLocationRelativeTo(null);
         AddNewItem.setVisible(true);
         this.setVisible(false);
+        
         GradeSlider.setMinimum(1);
         GradeSlider.setMaximum(3);
         GradeSlider.setValue(1);
         disableReinforcments();
+        
         ColourRadio0.setSelected(true);
-        WidthInput.setText("0");
-        HeightInput.setText("0");
-        LengthInput.setText("0");
+        WidthInput.setText("");
+        HeightInput.setText("");
+        LengthInput.setText("");
         QuantityInput.setText("1");
         PriceLabel.setText("£0.00");
         SealableCheckbox.setSelected(false);
@@ -496,32 +505,39 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         ord.removeFromOrderList();
     }//GEN-LAST:event_Button_RemoveBoxMousePressed
 
-    private void AddButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddButton1MousePressed
+    private void CancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelButtonMouseClicked
+        this.setVisible(true);
+        AddNewItem.setVisible(false);
+    }//GEN-LAST:event_CancelButtonMouseClicked
+
+    private void AddButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddButtonMouseClicked
         confirmBox();
-    }//GEN-LAST:event_AddButton1MousePressed
+    }//GEN-LAST:event_AddButtonMouseClicked
 
     private void confirmBox()
     {
-        double price = ord.calculatePrice();
-        if (price < 0.01){
-            JOptionPane.showConfirmDialog(null, "The Selected Options for a box"
-                    + " can not be provided.\n Please change the properties and "
-                    + "try again.", "ERROR", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-        }
-        else {
-            String text = "Add the following (" + ord.getCurrentBoxQuantity() + ") box(-es) to your order:\n"
-                    + "Width: " + ord.getCurrentBoxWidth() + "cm\n"
-                    + "Height: " + ord.getCurrentBoxHeight() + "cm\n"
-                    + "Length: " + ord.getCurrentBoxLength() + "cm\n"
-                    + "Grade: " + ord.getCurrentBoxGrade() + "\n"
-                    + "Reinforced Corners: " + ord.hasThickCorners() + "\n"
-                    + "Reinforced Bottom: " + ord.hasThickBottom() + "\n"
-                    + "Sealable: " + ord.isCurrentBoxSealable() + "\n\n Total: £" + price;
-            int dialogResult = JOptionPane.showConfirmDialog(null, text, "Confirm Box(-es)", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if(dialogResult == JOptionPane.OK_OPTION){
-                this.setVisible(true);
-                AddNewItem.setVisible(false);
-                ord.addBoxToOrder();
+        if (ord.isInputValid()) {
+            double price = ord.calculatePrice();
+            if (price < 0.01){
+                JOptionPane.showConfirmDialog(null, "The Selected Options for a box"
+                        + " can not be provided.\n Please change the properties and "
+                        + "try again.", "ERROR", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                String text = "Add the following (" + ord.getCurrentBoxQuantity() + ") box(-es) to your order:\n"
+                        + "Width: " + ord.getCurrentBoxWidth() + "cm\n"
+                        + "Height: " + ord.getCurrentBoxHeight() + "cm\n"
+                        + "Length: " + ord.getCurrentBoxLength() + "cm\n"
+                        + "Grade: " + ord.getCurrentBoxGrade() + "\n"
+                        + "Reinforced Corners: " + ord.hasReinforcedCorners() + "\n"
+                        + "Reinforced Bottom: " + ord.hasReinforcedBottom() + "\n"
+                        + "Sealable: " + ord.isCurrentBoxSealable() + "\n\n Total: £" + price;
+                int dialogResult = JOptionPane.showConfirmDialog(null, text, "Confirm Box(-es)", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if(dialogResult == JOptionPane.OK_OPTION){
+                    this.setVisible(true);
+                    AddNewItem.setVisible(false);
+                    ord.addBoxToOrder();
+                }
             }
         }
     }
@@ -575,7 +591,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AddButton1;
+    private javax.swing.JButton AddButton;
     private javax.swing.JFrame AddNewItem;
     private javax.swing.JCheckBox BottomCheckbox;
     private javax.swing.JButton Button_AddBox;

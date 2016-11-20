@@ -1,14 +1,29 @@
 package flexbox.box;
 
 public abstract class Box {
+    //Values of a box
     protected int width, height, length;
     protected int type, grade, colour, quantity;
     protected double pricePerBox, totalPrice;
     protected boolean sealableTops, reinforcedBottom, reinforcedCorners;
     
+    //Methods from child class
     public abstract double calculatePricePerBox();
     public abstract double calculateTotalPrice();
     
+    /**
+     * Box constructor. Gets values and sets as variables.
+     *  @param width Width of a Box.
+     *  @param height Height of a Box.
+     *  @param length Length of a Box.
+     *  @param type Type of a Box.
+     *  @param grade Grade of a Box.
+     *  @param colour Color of the Box.
+     *  @param quantity  Quantity of Boxes.
+     *  @param sealableTops Whether the top of the box should be Sealable.
+     *  @param reinforcedBottom Whether the box has reinforced Bottom.
+     *  @param reinforcedCorners Whether the box has reinforced Corners.
+     */
     public Box(int width, int height, int length, int type, int grade,
                int colour, int quantity, boolean sealableTops,
                boolean reinforcedBottom, boolean reinforcedCorners){
@@ -25,6 +40,10 @@ public abstract class Box {
         this.reinforcedCorners = reinforcedCorners;
     }
     
+    /**
+     * Calculates box area in meters.
+     * @return Area of box in meters.
+     */
     public double getBoxSizeInMeters(){
         double area, areaInMeters;
         area = (2 * length * width + 2 * length * height + 2 * width * height);
@@ -32,10 +51,19 @@ public abstract class Box {
         return areaInMeters;
     }
     
+    /**
+     * Takes square Centimeters - returns Square Meters.
+     * @param cmSquared Square Centimeters to be converted to square meters.
+     * @return Square meters.
+     */
     public double squareCentimetersToSquareMeters(double cmSquared){
         return cmSquared / 10000;
     }
     
+    /**
+     * Calculates how much the price should be increased (multiplied) by.
+     * @return Amount the price should be multiplied by.
+     */
     public float getGradeMultiplier(){
         switch (grade){
             case 2:
@@ -112,11 +140,11 @@ public abstract class Box {
     }
     
     public int getLength(){
-        return this.width;
+        return this.length;
     }
     
     public int getHeight(){
-        return this.width;
+        return this.height;
     }
     
     public int getType(){
