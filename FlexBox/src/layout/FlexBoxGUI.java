@@ -433,12 +433,10 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     private void CornerCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CornerCheckboxActionPerformed
         if (CornerCheckbox.isSelected()){
             GradeSlider.setMinimum(3);
-            GradeSlider.setValue(3);
             BottomCheckbox.setSelected(true);
         }
         else {
             GradeSlider.setMinimum(2);
-            GradeSlider.setValue(2);
         }
     }//GEN-LAST:event_CornerCheckboxActionPerformed
 
@@ -488,7 +486,6 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         
         GradeSlider.setMinimum(1);
         GradeSlider.setMaximum(3);
-        GradeSlider.setValue(1);
         disableReinforcments();
         
         ColourRadio0.setSelected(true);
@@ -514,8 +511,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         confirmBox();
     }//GEN-LAST:event_AddButtonMouseClicked
 
-    private void confirmBox()
-    {
+    private void confirmBox(){
         if (ord.isInputValid()) {
             double price = ord.calculatePrice();
             if (price < 0.01){
@@ -559,7 +555,9 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     private void setGradeSlider(int min, int max){
         GradeSlider.setMinimum(min);
         GradeSlider.setMaximum(max);
-        GradeSlider.setValue(min);
+        if (min > GradeSlider.getValue() | max < GradeSlider.getValue()){
+            GradeSlider.setValue(min);
+        }
     }
     
     public void getChoiceValues(ArrayList values){

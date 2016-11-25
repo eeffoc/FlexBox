@@ -1,11 +1,17 @@
 package flexbox.box;
 
-public class BoxType3 extends Box{
+public class BoxType3 extends BoxType1{
+    
+    protected final int colour;
     
     public BoxType3(int width, int height, int length, int grade, int quantity,
                     boolean sealableTops){
         
-        super(width, height, length, 3, grade, 2, quantity, sealableTops, false, false);
+        super(width, height, length, grade, quantity, sealableTops);
+        
+        this.type = 3;
+        this.colour = 2;
+        
     }
 
     @Override
@@ -24,5 +30,10 @@ public class BoxType3 extends Box{
         double totalPrice = this.pricePerBox * this.quantity;
         this.setTotalPrice(totalPrice);
         return totalPrice;
+    }
+    
+    @Override
+    public int getColour(){
+        return this.colour;
     }
 }

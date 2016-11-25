@@ -196,7 +196,7 @@ public class Order{
     }
     
     /**
-     * Returns the total price (rice of single box multiplied by quantity) 
+     * Returns the total price (price of single box multiplied by quantity) 
      * calculated by the users current selection of box properties.
      * @return The total price of the current items.
      */
@@ -347,7 +347,7 @@ public class Order{
         Box newBox = boxList.get(boxList.size() - 1);
         
         /*
-            Gets the tabel model from the table in the GUI.
+            Gets the table model from the table in the GUI.
             This is used for inserting newly added boxes into the order list.
         */
         DefaultTableModel model = (DefaultTableModel) gui.OrderTable.getModel();
@@ -404,7 +404,7 @@ public class Order{
         }
         catch (java.lang.ArrayIndexOutOfBoundsException exception){
             System.out.print("No Items Selected");
-            //TO:DO Exception handling
+            //TODO: Exception handling
         }
     }
 }

@@ -1,11 +1,16 @@
 package flexbox.box;
 
-public class BoxType4 extends Box{
+public class BoxType4 extends BoxType3{
+
+    protected final boolean reinforcedBottom;
     
     public BoxType4(int width, int height, int length, int grade, int quantity,
                     boolean sealableTops){
         
-        super(width, height, length, 4, grade, 2, quantity, sealableTops, true, false);
+        super(width, height, length, grade, quantity, sealableTops);
+        
+        this.type = 4;
+        this.reinforcedBottom = true;
     }
 
     @Override
@@ -24,5 +29,10 @@ public class BoxType4 extends Box{
         double totalPrice = this.pricePerBox * this.quantity;
         this.setTotalPrice(totalPrice);
         return totalPrice;
+    }
+    
+    @Override
+    public boolean isReinforcedBottom(){
+        return true;
     }
 }

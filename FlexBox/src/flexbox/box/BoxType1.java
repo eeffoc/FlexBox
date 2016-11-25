@@ -5,7 +5,9 @@ public class BoxType1 extends Box{
     public BoxType1(int width, int height, int length, int grade, int quantity,
                     boolean sealableTops){
         
-        super(width, height, length, 1, grade, 0, quantity, sealableTops, false, false);
+        super(width, height, length, grade, quantity, sealableTops);
+        
+        this.type = 1;
     }
 
     @Override

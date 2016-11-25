@@ -1,13 +1,13 @@
 package flexbox.box;
 
 public abstract class Box {
-    //Values of a box
+    //Values of the simplest box
     protected int width, height, length;
-    protected int type, grade, colour, quantity;
+    protected int type, grade, quantity;
     protected double pricePerBox, totalPrice;
-    protected boolean sealableTops, reinforcedBottom, reinforcedCorners;
+    protected boolean sealableTops;
     
-    //Methods from child class
+    //Abstract methods
     public abstract double calculatePricePerBox();
     public abstract double calculateTotalPrice();
     
@@ -18,26 +18,20 @@ public abstract class Box {
      *  @param length Length of a Box.
      *  @param type Type of a Box.
      *  @param grade Grade of a Box.
-     *  @param colour Color of the Box.
+     *  @param colour Colour of the Box.
      *  @param quantity  Quantity of Boxes.
      *  @param sealableTops Whether the top of the box should be Sealable.
      *  @param reinforcedBottom Whether the box has reinforced Bottom.
      *  @param reinforcedCorners Whether the box has reinforced Corners.
      */
-    public Box(int width, int height, int length, int type, int grade,
-               int colour, int quantity, boolean sealableTops,
-               boolean reinforcedBottom, boolean reinforcedCorners){
+    public Box(int width, int height, int length, int grade,
+            int quantity, boolean sealableTops){
         this.width = width;
         this.height = height;
         this.length = length;
-        
-        this.type = type;
         this.grade = grade;
-        this.colour = colour;
         this.quantity = quantity;
         this.sealableTops = sealableTops;
-        this.reinforcedBottom = reinforcedBottom;
-        this.reinforcedCorners = reinforcedCorners;
     }
     
     /**
@@ -65,22 +59,30 @@ public abstract class Box {
      * @return Amount the price should be multiplied by.
      */
     public float getGradeMultiplier(){
+        float gradeMultiplier = 0f;
+        
         switch (grade){
+            case 1:
+                gradeMultiplier = 0.5f;
+                break;
             case 2:
-                return 0.6f;
+                gradeMultiplier = 0.6f;
+                break;
             case 3:
-                return 0.72f;
+                gradeMultiplier = 0.72f;
+                break;
             case 4:
-                return 0.9f;
+                gradeMultiplier = 0.9f;
+                break;
             case 5:
-                return 1.4f;
+                gradeMultiplier = 1.4f;
+                break;
             default:
-                return 0.5f;
+                break;
         }
+        return gradeMultiplier;
     }
-    
 
-    
     //SETTERS
     
     protected void setWidth(int width){
@@ -103,10 +105,6 @@ public abstract class Box {
         this.grade = grade;
     }
     
-    protected void setColour(int colour){
-        this.colour = colour;
-    }
-    
     protected void setQuantity(int quantity){
         this.quantity = quantity;
     }
@@ -122,16 +120,6 @@ public abstract class Box {
     protected void setSealable(boolean sealable){
         this.sealableTops = sealable;
     }
-    
-    protected void setReinforcedBottom(boolean bottom){
-        this.reinforcedBottom = bottom;
-    }
-    
-    protected void setReinforcedCorners(boolean corners){
-        this.reinforcedCorners = corners;
-    }
-    
-    
     
     //GETTERS
     
@@ -156,7 +144,7 @@ public abstract class Box {
     }
     
     public int getColour(){
-        return this.colour;
+        return 0;
     }
     
     public int getQuantity(){
@@ -176,10 +164,10 @@ public abstract class Box {
     }
     
     public boolean isReinforcedBottom(){
-        return this.reinforcedBottom;
+        return false;
     }
     
     public boolean isReinforcedCorners(){
-        return this.reinforcedCorners;
+        return false;
     }
 }
