@@ -1,4 +1,4 @@
-package layout;
+﻿package layout;
 import flexbox.Order;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -26,6 +26,8 @@ public class FlexBoxGUI extends javax.swing.JFrame {
             Refference Order class as super class. To call the methods from Order.
         */
         ord = in;
+        
+        CornerWarning.setVisible(false);
         
     }
 
@@ -72,6 +74,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        CornerWarning = new javax.swing.JLabel();
         Label_Main = new javax.swing.JLabel();
         Label_CurrOrd = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -82,6 +85,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         Button_RemoveBox = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         OrderTable = new javax.swing.JTable();
+        Button_EditBox = new javax.swing.JButton();
 
         AddNewItem.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         AddNewItem.setTitle("Add New Item");
@@ -186,8 +190,8 @@ public class FlexBoxGUI extends javax.swing.JFrame {
 
         CancelButton.setText("Cancel");
         CancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CancelButtonMouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                CancelButtonMousePressed(evt);
             }
         });
         AddNewItem.getContentPane().add(CancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 340, 140, 40));
@@ -270,13 +274,13 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         AddNewItem.getContentPane().add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 720, 10));
 
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setText("Cost:");
+        jLabel15.setText("Total Cost:");
         AddNewItem.getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 160, 130, -1));
 
-        AddButton.setText("Add To Cart");
+        AddButton.setText("Add To Basket");
         AddButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AddButtonMouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                AddButtonMousePressed(evt);
             }
         });
         AddNewItem.getContentPane().add(AddButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 140, 40));
@@ -294,6 +298,13 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("cm");
         AddNewItem.getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 180, 30, 20));
+
+        CornerWarning.setForeground(new java.awt.Color(204, 102, 0));
+        CornerWarning.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        CornerWarning.setText("Warning! Can't have Reinforced Corners without having Reinforced Bottom!");
+        CornerWarning.setMaximumSize(new java.awt.Dimension(720, 15));
+        CornerWarning.setMinimumSize(new java.awt.Dimension(720, 15));
+        AddNewItem.getContentPane().add(CornerWarning, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 720, -1));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FlexBox");
@@ -328,13 +339,13 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         getContentPane().add(Label_TotalSum, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 360, 138, -1));
 
         Button_AddBox.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
-        Button_AddBox.setText("Add To Order");
+        Button_AddBox.setText("Add New Item");
         Button_AddBox.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 Button_AddBoxMousePressed(evt);
             }
         });
-        getContentPane().add(Button_AddBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 150, 45));
+        getContentPane().add(Button_AddBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 360, 150, 45));
 
         Button_CheckOut.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         Button_CheckOut.setText("Check out");
@@ -355,11 +366,12 @@ public class FlexBoxGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Quantity", "Grade", "Width", "Length", "Height", "Coloured", "Bottom", "Corners", "Sealable", "PPI", "Total"
+                "Quantity", "Grade", "Width (cm)", "Length (cm)", "Height (cm)", "Coloured", "Bottom", "Corners", "Sealable", "PPI", "Total"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false, false, false
@@ -395,6 +407,15 @@ public class FlexBoxGUI extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 990, 280));
 
+        Button_EditBox.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        Button_EditBox.setText("Edit Selected");
+        Button_EditBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                Button_EditBoxMousePressed(evt);
+            }
+        });
+        getContentPane().add(Button_EditBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 150, 45));
+
         getAccessibleContext().setAccessibleDescription("Desktop application for placing orders");
 
         pack();
@@ -408,6 +429,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         if (ColourRadio0.isSelected()){
             setGradeSlider(1, 3);
             disableReinforcments();
+            CornerWarning.setVisible(false);
         }
     }//GEN-LAST:event_ColourRadio0ActionPerformed
 
@@ -415,6 +437,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         if (ColourRadio1.isSelected()){
             setGradeSlider(2, 4);
             disableReinforcments();
+            CornerWarning.setVisible(false);
         }
     }//GEN-LAST:event_ColourRadio1ActionPerformed
 
@@ -425,22 +448,36 @@ public class FlexBoxGUI extends javax.swing.JFrame {
             CornerCheckbox.setEnabled(true);
             BottomCheckbox.setSelected(false);
             CornerCheckbox.setSelected(false);
+            CornerWarning.setVisible(false);
         }
     }//GEN-LAST:event_ColourRadio2ActionPerformed
 
     private void CornerCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CornerCheckboxActionPerformed
         if (CornerCheckbox.isSelected()){
             GradeSlider.setMinimum(3);
-            BottomCheckbox.setSelected(true);
+            if (!BottomCheckbox.isSelected()){
+                BottomCheckbox.setSelected(true);
+                CornerWarning.setVisible(true);
+            } else CornerWarning.setVisible(false);
         }
         else {
             GradeSlider.setMinimum(2);
+            CornerWarning.setVisible(false);
         }
     }//GEN-LAST:event_CornerCheckboxActionPerformed
 
     private void BottomCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BottomCheckboxActionPerformed
         if (!BottomCheckbox.isSelected()){
             CornerCheckbox.setSelected(false);
+            BottomCheckbox.setSelected(false);
+            if (CornerCheckbox.isSelected()) {
+                CornerWarning.setVisible(true);
+                CornerCheckbox.setSelected(false);
+            }
+            else CornerWarning.setVisible(false);
+        }
+        else {
+            CornerWarning.setVisible(false);
         }
         setGradeSlider(2, 5);
     }//GEN-LAST:event_BottomCheckboxActionPerformed
@@ -488,22 +525,89 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         QuantityInput.setText(String.valueOf(ord.MIN_QUANTITY));
         PriceLabel.setText("£0.00");
         SealableCheckbox.setSelected(false);
-        
     }//GEN-LAST:event_Button_AddBoxMousePressed
 
     private void Button_RemoveBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_RemoveBoxMousePressed
         ord.removeFromOrderList();
     }//GEN-LAST:event_Button_RemoveBoxMousePressed
 
-    private void CancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelButtonMouseClicked
+    private void AddButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddButtonMousePressed
+        ord.addTempBox(true);
+    }//GEN-LAST:event_AddButtonMousePressed
+
+    private void CancelButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelButtonMousePressed
         this.setVisible(true);
         AddNewItem.setVisible(false);
-    }//GEN-LAST:event_CancelButtonMouseClicked
+    }//GEN-LAST:event_CancelButtonMousePressed
 
-    private void AddButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddButtonMouseClicked
-        ord.addTempBox(true);
-    }//GEN-LAST:event_AddButtonMouseClicked
+    private void Button_EditBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_EditBoxMousePressed
+        if (ord.canEditSelected()){
+            this.setVisible(false);
+            AddNewItem.setLocationRelativeTo(null);
+            AddNewItem.setVisible(true);
+        }
+    }//GEN-LAST:event_Button_EditBoxMousePressed
 
+    public void updateAddNewBoxValues(int width, int height, int length, 
+                    int quantity, boolean sealable, int grade, boolean bottom, 
+                    boolean corners, int colour, int type, float price){
+
+        switch (colour){
+            case 0:
+                ColourRadio0.setSelected(true);
+                break;
+            case 1:
+                ColourRadio1.setSelected(true);
+                break;
+            case 2:
+                ColourRadio2.setSelected(true);
+                break;
+        }
+        
+        switch (type) {
+            case 1:
+                setGradeSlider(1,3);
+                disableReinforcments();
+                break;
+            case 2:
+                setGradeSlider(2,4);
+                disableReinforcments();
+                break;
+            case 3:
+                setGradeSlider(2,5);
+                BottomCheckbox.setEnabled(true);
+                CornerCheckbox.setEnabled(true);
+                break;
+            case 4:
+                setGradeSlider(2,5);
+                BottomCheckbox.setEnabled(true);
+                CornerCheckbox.setEnabled(true);
+                break;
+            case 5:
+                setGradeSlider(3,5);
+                BottomCheckbox.setEnabled(true);
+                CornerCheckbox.setEnabled(true);
+                break;
+        }
+        
+        GradeSlider.setValue(grade);
+        
+        if (sealable) SealableCheckbox.setSelected(true);
+        else SealableCheckbox.setSelected(false);
+        
+        if (bottom) BottomCheckbox.setSelected(true);
+        else BottomCheckbox.setSelected(false);
+        
+        if (corners) CornerCheckbox.setSelected(true);
+        else CornerCheckbox.setSelected(false);
+        
+        WidthInput.setText(String.valueOf(width));
+        HeightInput.setText(String.valueOf(height));
+        LengthInput.setText(String.valueOf(length));
+        QuantityInput.setText(String.valueOf(quantity));
+        PriceLabel.setText("£"+price);
+    }
+    
     public void confirmBox(){
         String text = "Add the following " + ord.tempBox.getQuantity() + " box(-es) to your order:\n"
                         + "Width: " + ord.tempBox.getWidth() + "cm\n"
@@ -561,6 +665,11 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         if(dialogResult == JOptionPane.OK_OPTION) return true;
         else return false;
     }
+    
+    public void nothingSelectedError() {
+        String message = "No Rows Selected!\n";
+        JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddButton;
@@ -568,6 +677,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     public javax.swing.JCheckBox BottomCheckbox;
     private javax.swing.JButton Button_AddBox;
     private javax.swing.JButton Button_CheckOut;
+    private javax.swing.JButton Button_EditBox;
     private javax.swing.JButton Button_RemoveBox;
     private javax.swing.JButton CalculateCostButton;
     private javax.swing.JButton CancelButton;
@@ -576,6 +686,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     public javax.swing.JRadioButton ColourRadio1;
     public javax.swing.JRadioButton ColourRadio2;
     public javax.swing.JCheckBox CornerCheckbox;
+    private javax.swing.JLabel CornerWarning;
     public javax.swing.JSlider GradeSlider;
     public javax.swing.JEditorPane HeightInput;
     private javax.swing.JLabel Label_CurrOrd;
@@ -608,5 +719,4 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     // End of variables declaration//GEN-END:variables
-
 }

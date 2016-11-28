@@ -86,13 +86,13 @@ public class Order{
     
     private int getColour(){
         int colour;
-        if (gui.ColourRadio1.isSelected()){
+        if (gui.ColourRadio0.isSelected()){
+            colour = 0;
+        }
+        else if (gui.ColourRadio1.isSelected()) {
             colour = 1;
         }
-        else if (gui.ColourRadio2.isSelected()) {
-            colour = 2;
-        }
-        else colour = 3;
+        else colour = 2;
         return colour;
     }
     
@@ -144,8 +144,7 @@ public class Order{
         boolean bottom = gui.BottomCheckbox.isSelected();
         boolean corners = gui.CornerCheckbox.isSelected();
         int colour = getColour();
-        int type = calculateType(colour, bottom, corners);
-        
+        int type = calculateType(colour, bottom, corners);     
         if (width!=EXCEPTION && height!=EXCEPTION && length!=EXCEPTION && quantity!=EXCEPTION){
             switch (type){
                 case 1:
@@ -163,6 +162,7 @@ public class Order{
                 case 5:
                     tempBox = new BoxType5(width, height, length, grade, quantity, sealable);
                     break;
+                    
             }
             tempBox.calculatePricePerBox();
             gui.PriceLabel.setText(String.valueOf(floatTo2dpCurrency(tempBox.calculateTotalPriceOfBoxes())));
@@ -225,10 +225,10 @@ public class Order{
      * Throws an exception if no box is selected.
      */
     public void removeFromOrderList(){
-        try {
-            boolean confirm = gui.confirmRemove();
-            
+        try {            
             Box newBox = boxList.get(gui.OrderTable.getSelectedRow());
+            
+            boolean confirm = gui.confirmRemove();
             //Gets currently selected boxes.
             if (confirm) {
                //Decreases order sum.
@@ -240,16 +240,52 @@ public class Order{
                 //Removes from GUI Order List.
                 DefaultTableModel model = (DefaultTableModel) gui.OrderTable.getModel();
                 model.removeRow(gui.OrderTable.getSelectedRow());
-                System.out.print(gui.OrderTable.getSelectedRow());
-
                 //Updates order total sum
                 updateOrderTotal(); 
             }
         }
         catch (java.lang.ArrayIndexOutOfBoundsException exception){
-            System.out.print("No Items Selected");
-            //TODO: Exception handling
+            gui.nothingSelectedError();
         }
+    }
+
+    public boolean canEditSelected() {
+        try {            
+            tempBox = boxList.get(gui.OrderTable.getSelectedRow());
+
+            //Decreases order sum.
+            orderSum -= tempBox.calculateTotalPriceOfBoxes();
+
+            //Removes from ArrayList
+            boxList.remove(gui.OrderTable.getSelectedRow());
+
+            //Removes from GUI Order List.
+            DefaultTableModel model = (DefaultTableModel) gui.OrderTable.getModel();
+            model.removeRow(gui.OrderTable.getSelectedRow());
+                //Updates order total sum
+            updateOrderTotal();
+            return true;
+        }
+        catch (java.lang.ArrayIndexOutOfBoundsException exception){
+            gui.nothingSelectedError();
+        }
+        return false;
+    }
+    
+    public void setEditableValues(){
+            int width = tempBox.getWidth();
+            int height = tempBox.getHeight();
+            int length = tempBox.getLength();
+            int quantity = tempBox.getQuantity();
+            boolean sealable = tempBox.isBoxSealable();
+            int grade = tempBox.getGrade();
+            boolean bottom = tempBox.isReinforcedBottom();
+            boolean corners = tempBox.isReinforcedCorners();
+            int colour = tempBox.getColour();
+            int type = tempBox.getType();
+            float totalPrice = tempBox.calculateTotalPriceOfBoxes();
+            gui.updateAddNewBoxValues(width, height, length, quantity, 
+                    sealable, grade, bottom, corners, colour, type, totalPrice);
     }
     
     public String floatTo2dpCurrency(float value){
