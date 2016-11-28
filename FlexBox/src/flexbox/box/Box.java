@@ -98,6 +98,7 @@ public abstract class Box {
     
     public float calculateTotalPriceOfBoxes(){
         float totalCost = this.quantity * this.pricePerBox;
+        setTotalPrice(totalCost);
         return totalCost;
     }
 

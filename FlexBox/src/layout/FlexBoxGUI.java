@@ -1,14 +1,9 @@
 package layout;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-
-
 
 public class FlexBoxGUI extends javax.swing.JFrame {
-
-     
+    
     //Used for refferencing the Order class as being the super class.
     flexbox.Order ord;
     
@@ -473,10 +468,11 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_QuantityInputKeyTyped
 
     private void CalculateCostButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CalculateCostButtonMousePressed
-        if (ord.isInputValid()) {
-            float price = ord.calculatePrice();
-            ord.setPriceLabel(price);
-        }
+//        if (ord.isInputValid()) {
+//            float price = ord.calculatePrice();
+//            ord.setPriceLabel(price);
+//        }
+        ord.addTempBox(false);
     }//GEN-LAST:event_CalculateCostButtonMousePressed
 
     private void Button_AddBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_AddBoxMousePressed
@@ -489,10 +485,10 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         disableReinforcments();
         
         ColourRadio0.setSelected(true);
-        WidthInput.setText("");
-        HeightInput.setText("");
-        LengthInput.setText("");
-        QuantityInput.setText("1");
+        WidthInput.setText(String.valueOf(ord.MIN_WIDTH));
+        HeightInput.setText(String.valueOf(ord.MIN_HEIGHT));
+        LengthInput.setText(String.valueOf(ord.MIN_LENGTH));
+        QuantityInput.setText(String.valueOf(ord.MIN_QUANTITY));
         PriceLabel.setText("£0.00");
         SealableCheckbox.setSelected(false);
         
@@ -508,34 +504,24 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_CancelButtonMouseClicked
 
     private void AddButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddButtonMouseClicked
-        confirmBox();
+        ord.addTempBox(true);
     }//GEN-LAST:event_AddButtonMouseClicked
 
-    private void confirmBox(){
-        if (ord.isInputValid()) {
-            float price = ord.calculatePrice();
-            if (price < 0.01){
-                JOptionPane.showConfirmDialog(null, "The Selected Options for a box"
-                        + " can not be provided.\n Please change the properties and "
-                        + "try again.", "ERROR", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-            }
-            else {
-                String text = "Add the following (" + ord.getCurrentBoxQuantity() + ") box(-es) to your order:\n"
-                        + "Width: " + ord.getCurrentBoxWidth() + "cm\n"
-                        + "Height: " + ord.getCurrentBoxHeight() + "cm\n"
-                        + "Length: " + ord.getCurrentBoxLength() + "cm\n"
-                        + "Grade: " + ord.getCurrentBoxGrade() + "\n"
-                        + "Reinforced Corners: " + ord.hasReinforcedCorners() + "\n"
-                        + "Reinforced Bottom: " + ord.hasReinforcedBottom() + "\n"
-                        + "Sealable: " + ord.isCurrentBoxSealable() + "\n\n Total: £" + price;
+    public void confirmBox(){
+        String text = "Add the following " + ord.tempBox.getQuantity() + " box(-es) to your order:\n"
+                        + "Width: " + ord.tempBox.getWidth() + "cm\n"
+                        + "Height: " + ord.tempBox.getHeight() + "cm\n"
+                        + "Length: " + ord.tempBox.getLength() + "cm\n"
+                        + "Grade: " + ord.tempBox.getGrade() + "\n"
+                        + "Reinforced Corners: " + ord.tempBox.isReinforcedCorners() + "\n"
+                        + "Reinforced Bottom: " + ord.tempBox.isReinforcedBottom() + "\n"
+                        + "Sealable: " + ord.tempBox.isBoxSealable() + "\n\n Total: £" + ord.tempBox.getTotalPrice();
                 int dialogResult = JOptionPane.showConfirmDialog(null, text, "Confirm Box(-es)", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if(dialogResult == JOptionPane.OK_OPTION){
                     this.setVisible(true);
                     AddNewItem.setVisible(false);
-                    ord.addBoxToOrder();
+                    ord.addToOrderList();
                 }
-            }
-        }
     }
     
     private void isNumberInput(java.awt.event.KeyEvent evt){
@@ -560,49 +546,40 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         }
     }
     
-    public void getChoiceValues(ArrayList values){
-        values.clear();
-        values.add(GradeSlider.getValue());
-        
-        if (ColourRadio0.isSelected()) { values.add(0); }
-        else if (ColourRadio1.isSelected()) { values.add(1); }
-        else { values.add(2); }
-        
-        if (CornerCheckbox.isSelected()) { values.add(true); } else { values.add(false); }
-        if (BottomCheckbox.isSelected()) { values.add(true); } else { values.add(false); }
-        if (SealableCheckbox.isSelected()) { values.add(true); } else { values.add(false); }
-        
-        values.add(Integer.valueOf(LengthInput.getText()));
-        values.add(Integer.valueOf(WidthInput.getText()));
-        values.add(Integer.valueOf(HeightInput.getText()));
-        values.add(Integer.valueOf(QuantityInput.getText()));
-    }
-    
-    public void emptyFieldError(){
-        String message = "One or a few of the following fields are empty:\n"
-                + "Width\n"
-                + "Length\n"
-                + "Height\n"
-                + "Quantity\n\n"
+    public void emptyFieldError(String field){
+        String message = "The " + field + " field is empty.\n"
                 + "Please check your input and try again.";
         JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public void wrongInput(String field, int min, int max){
+        String message = "The " + field + " field is incorrect.\n"
+                + "The value should be between " + min + " and " + max + ".";
+        JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public boolean confirmRemove(){
+        String message = "Are you sure you want to delete selected row?";
+        int dialogResult = JOptionPane.showConfirmDialog(null, message, "Confirm Box(-es)", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(dialogResult == JOptionPane.OK_OPTION) return true;
+        else return false;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddButton;
     private javax.swing.JFrame AddNewItem;
-    private javax.swing.JCheckBox BottomCheckbox;
+    public javax.swing.JCheckBox BottomCheckbox;
     private javax.swing.JButton Button_AddBox;
     private javax.swing.JButton Button_CheckOut;
     private javax.swing.JButton Button_RemoveBox;
     private javax.swing.JButton CalculateCostButton;
     private javax.swing.JButton CancelButton;
     private javax.swing.ButtonGroup ColourButtons;
-    private javax.swing.JRadioButton ColourRadio0;
-    private javax.swing.JRadioButton ColourRadio1;
-    private javax.swing.JRadioButton ColourRadio2;
-    private javax.swing.JCheckBox CornerCheckbox;
-    private javax.swing.JSlider GradeSlider;
+    public javax.swing.JRadioButton ColourRadio0;
+    public javax.swing.JRadioButton ColourRadio1;
+    public javax.swing.JRadioButton ColourRadio2;
+    public javax.swing.JCheckBox CornerCheckbox;
+    public javax.swing.JSlider GradeSlider;
     public javax.swing.JEditorPane HeightInput;
     private javax.swing.JLabel Label_CurrOrd;
     private javax.swing.JLabel Label_Main;
@@ -612,7 +589,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     public javax.swing.JTable OrderTable;
     public javax.swing.JLabel PriceLabel;
     public javax.swing.JEditorPane QuantityInput;
-    private javax.swing.JCheckBox SealableCheckbox;
+    public javax.swing.JCheckBox SealableCheckbox;
     public javax.swing.JEditorPane WidthInput;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

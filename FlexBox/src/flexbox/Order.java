@@ -22,20 +22,78 @@ public class Order{
     /*The total of the order*/
     private float orderSum = 0;
     
+    public Box tempBox;
+    
+    private static final int EXCEPTION = 0;
+    public static final int MIN_HEIGHT = 10;
+    public static final int MAX_HEIGHT = 400;
+    public static final int MIN_LENGTH = 10;
+    public static final int MAX_LENGTH = 400;
+    public static final int MIN_WIDTH = 10;
+    public static final int MAX_WIDTH = 400;
+    public static final int MIN_QUANTITY = 1;
+    public static final int MAX_QUANTITY = 500;
+    
     /**
      * This constructor does not require parameters.
      */
     public Order() { 
-        
     }
     
-    /**
-     * Sets the price label of boxes that the user currently wants to add to
-     * his current order.
-     *  @param price The value to which to set the price label to.
-     */
-    public void setPriceLabel(float price) {
-        gui.PriceLabel.setText("£" + String.format("%.2f", price));
+    public int getWidth(){
+        try {
+            int value = Integer.valueOf(gui.WidthInput.getText());
+            if (value < MIN_WIDTH || value > MAX_WIDTH) gui.wrongInput("Width", MIN_WIDTH, MAX_WIDTH);
+            else return value;
+        } catch (java.lang.NumberFormatException e) {
+            //TODO POPUP
+        }
+        return EXCEPTION;
+    }
+    
+    public int getLength(){
+        try {
+            int value = Integer.valueOf(gui.LengthInput.getText());
+            if (value < MIN_LENGTH || value > MAX_LENGTH) gui.wrongInput("Length", MIN_LENGTH, MAX_LENGTH);
+            else return value;
+        } catch (java.lang.NumberFormatException e) {
+            //TODO POPUP
+        }
+        return EXCEPTION;
+    }
+    
+    public int getHeight(){
+        try {
+            int value = Integer.valueOf(gui.HeightInput.getText());
+            if (value < MIN_HEIGHT || value > MAX_HEIGHT) gui.wrongInput("Height", MIN_HEIGHT, MAX_HEIGHT);
+            else return value;
+        } catch (java.lang.NumberFormatException e) {
+            //TODO POPUP
+        }
+        return EXCEPTION;
+    }
+    
+    public int getQuantity(){
+        try {
+            int value = Integer.valueOf(gui.QuantityInput.getText());
+            if (value < MIN_QUANTITY || value > MAX_QUANTITY) gui.wrongInput("Quantity", MIN_QUANTITY, MAX_QUANTITY);
+            else return value;
+        } catch (java.lang.NumberFormatException e) {
+            gui.emptyFieldError("Quantity");
+        }
+        return EXCEPTION;
+    }
+    
+    private int getColour(){
+        int colour;
+        if (gui.ColourRadio1.isSelected()){
+            colour = 1;
+        }
+        else if (gui.ColourRadio2.isSelected()) {
+            colour = 2;
+        }
+        else colour = 3;
+        return colour;
     }
     
     /**
@@ -57,15 +115,7 @@ public class Order{
      * choices.
      *  @return The type of the box(-es) the user wants to add to his order
      */
-    private int getTheType(){
-        ArrayList values = new ArrayList();
-        gui.getChoiceValues(values);
-        
-        //Get's the values from what the user has currently selected
-        int colour = getCurrentBoxColor();
-        boolean corners = hasReinforcedCorners();
-        boolean bottom = hasReinforcedBottom();
-        
+    private int calculateType(int colour, boolean bottom, boolean corners){   
         //See JavaDoc of this method
         int sum = colour;
         if (bottom) sum+=10;
@@ -83,250 +133,40 @@ public class Order{
                 if (sum < 100) return 4; else return 5;   
         }
     }
-    
-    /**
-     * Returns the color from the currently selected options of a box.
-     *  @return Color type
-     */
-    public int getCurrentBoxColor(){
-        ArrayList values = new ArrayList();
-        gui.getChoiceValues(values);
-        return (int) values.get(1);
-    }
-    
-    /**
-     * Returns whether the user has selected reinforced corners in the
-     * selected options of a box.
-     *  @return If the selected box/boxes needs to have reinforced Corners.
-     */
-    public boolean hasReinforcedCorners(){
-        ArrayList values = new ArrayList();
-        gui.getChoiceValues(values);
-        return (boolean) values.get(2);  
-    }
-    
-    /**
-     * Returns whether the user has selected reinforced bottom in the
-     * selected options of a box.
-     *  @return If the selected box/boxes needs to have reinforced Bottom.
-     */
-    public boolean hasReinforcedBottom(){
-        ArrayList values = new ArrayList();
-        gui.getChoiceValues(values);
-        return (boolean) values.get(3);  
-    }
-    
-    /**
-     * Fetches the length from the currently selected box options.
-     *  @return Length of Box.
-     */
-    public int getCurrentBoxLength(){
-        int value = fetchDimensionData(5);
-        return value;
-    }
-    
-    /**
-     * Fetches the width from the currently selected box options.
-     *  @return Width of Box.
-     */
-    public int getCurrentBoxWidth(){
-        int value = fetchDimensionData(6);
-        return value;
-    }
-    
-    /**
-     * Fetches the height from the currently selected box options.
-     *  @return Height of Box.
-     */
-    public int getCurrentBoxHeight(){
-        int value = fetchDimensionData(7);
-        return value;
-    }
-    
-    /**
-     * Fetches the quantity from the currently selected box options.
-     *  @return Quantity of Boxes.
-     */
-    public int getCurrentBoxQuantity(){
-        int value = fetchDimensionData(8);
-        return value;
-    }
-    
-    /**
-     * Fetches the grade from the currently selected box options.
-     *  @return Grade of Box.
-     */
-    public int getCurrentBoxGrade(){
-        int value = fetchDimensionData(0);
-        return value;
-    }
-    
-    /**
-     * Fetches the sealable option from the currently selected box options.
-     *  @return Is box Sealable.
-     */
-    public boolean isCurrentBoxSealable(){
-        ArrayList values = new ArrayList();
-        gui.getChoiceValues(values);
-        return (boolean) values.get(4);   
-    }
-    
-    /**
-     * Gets specific value from a specific field of an (current box options) 
-     * ArrayList.
-     *  @param field the index to get the value from.
-     *  @return Value of a specific field.
-     */
-    private int fetchDimensionData(int field) {
-        ArrayList values = new ArrayList();
-        gui.getChoiceValues(values);
-        return (int) values.get(field);
-    }
-    
-    /**
-     * Calculates the surface area of a box and returns it in square meters.
-     *  @param width Width of a box (Centimetres).
-     *  @param length Length of a box (Centimetres).
-     *  @param height Height of a box (Centimetres).
-     *  @return Box Surface Area in square meters.
-     */
-    private float calculateSurfaceArea(int width, int length, int height){
-        float area = (2.0f * (float)width * (float)length + 2.0f * 
-                (float)length * (float)height + 2.0f * 
-                (float)width * (float)height) / 10000.0f;
-        return area;
-    }
-    
-    /**
-     * Returns the total price (price of single box multiplied by quantity) 
-     * calculated by the users current selection of box properties.
-     * @return The total price of the current items.
-     */
-    public float calculatePrice() {
-        float price = 0.0f;
-        
-        //Gets current variables
-        int length = getCurrentBoxLength();
-        int width = getCurrentBoxWidth();
-        int height = getCurrentBoxHeight();
-        int quantity = getCurrentBoxQuantity();
-        
-        //Stores surface area in square meters.
-        float surfaceArea = calculateSurfaceArea(width, length, height);
-        
-        //Stores whether the current box is sealable.
-        boolean sealable = isCurrentBoxSealable();
-        
-        //Depending on the grade of the box we calculate the base price.
-        switch ((int) getCurrentBoxGrade()){
-            case 1:
-                price = surfaceArea * 0.5f;
-                break;
-            case 2:
-                price = surfaceArea * 0.6f;
-                break;
-            case 3:
-                price = surfaceArea * 0.72f;
-                break;
-            case 4:
-                price = surfaceArea * 0.9f;
-                break;
-            case 5:
-                price = surfaceArea * 1.4f;
-                break;
-        }
-        
-        /*
-            Start of calculation on how much the price should increase dependent
-            whether the box is sealable or not
-        */
-        
-        //Percentage divided by 100 (easier to read)
-        float priceIncreasePercentage = 1.0f; 
-        if (sealable){
-            priceIncreasePercentage += 0.08f;
-        }
-        
-        /*
-            Price increase dependant on the type of the box.
-            Increases the price of the boxes by set percentage.
-            The set percentage is manually calculated.
-        */
-        switch ((int) getTheType()){
-            case 2:
-                priceIncreasePercentage += 0.13;
-                break;
-            case 3:
-                priceIncreasePercentage += 0.16;
-                break;
-            case 4:
-                priceIncreasePercentage += 0.30;
-                break;
-            case 5:
-                priceIncreasePercentage += 0.40;
-                break;
-            default: //Box is Type 1
-                priceIncreasePercentage += 0;
-                break;
-        }
-        
-        price = priceIncreasePercentage * price * quantity; //Calculates total.
-        
-        //Formats it to 2 decimal places and returns it.
-        return price;
-    }
 
-    /**
-     * Throws an exception if one of the input fields could not be
-     * evaluated (are empty).
-     *  @return is user input correct
-     */
-    public boolean isInputValid(){
-        ArrayList values = new ArrayList();
-        try {
-            gui.getChoiceValues(values);
-            return true;
-        }
-        catch (java.lang.NumberFormatException e ){
-            gui.emptyFieldError();
-            return false;
-        }
-    }
-    
-    /**
-     *  Adds current box to ArrayList.
-     */
-    public void addBoxToOrder(){
-        //Gets current box values.
-        int width = getCurrentBoxWidth();
-        int height = getCurrentBoxHeight();
-        int length = getCurrentBoxLength();
-        int quantity = getCurrentBoxQuantity();
-        int grade = getCurrentBoxGrade();
-        boolean sealable = isCurrentBoxSealable();
+    public void addTempBox(boolean AddToOrder){
+        int width = getWidth();
+        int height = getHeight();
+        int length = getLength();
+        int quantity = getQuantity();
+        boolean sealable = gui.SealableCheckbox.isSelected();
+        int grade = gui.GradeSlider.getValue();
+        boolean bottom = gui.BottomCheckbox.isSelected();
+        boolean corners = gui.CornerCheckbox.isSelected();
+        int colour = getColour();
+        int type = calculateType(colour, bottom, corners);
         
-        //Depending on the type of box - a new class object is created.
-        switch (getTheType()){
-            case 1:
-                boxList.add(new BoxType1(width, height, length, grade, quantity, sealable));
-                addToOrderList();
-                break;
-            case 2:
-                boxList.add(new BoxType2(width, height, length, grade, quantity, sealable));
-                addToOrderList();
-                break;
-            case 3:
-                boxList.add(new BoxType3(width, height, length, grade, quantity, sealable));
-                addToOrderList();
-                break;
-            case 4:
-                boxList.add(new BoxType4(width, height, length, grade, quantity, sealable));
-                addToOrderList();
-                break;
-            case 5:
-                boxList.add(new BoxType5(width, height, length, grade, quantity, sealable));
-                addToOrderList();
-                break;
+        if (width!=EXCEPTION && height!=EXCEPTION && length!=EXCEPTION && quantity!=EXCEPTION){
+            switch (type){
+                case 1:
+                    tempBox = new BoxType1(width, height, length, grade, quantity, sealable);
+                    break;
+                case 2:
+                    tempBox = new BoxType2(width, height, length, grade, quantity, sealable);
+                    break;
+                case 3:
+                    tempBox = new BoxType3(width, height, length, grade, quantity, sealable);
+                    break;
+                case 4:
+                    tempBox = new BoxType4(width, height, length, grade, quantity, sealable);
+                    break;
+                case 5:
+                    tempBox = new BoxType5(width, height, length, grade, quantity, sealable);
+                    break;
+            }
+            tempBox.calculatePricePerBox();
+            gui.PriceLabel.setText(String.valueOf("£" + tempBox.calculateTotalPriceOfBoxes()));
+            if (AddToOrder) gui.confirmBox();
         }
     }
     
@@ -342,11 +182,10 @@ public class Order{
      * Adds the newly created box to order list and displays it in the GUI.
      */
     public void addToOrderList(){
-        //New Decimal Format for rounding.
-        DecimalFormat round = new DecimalFormat("#.##");
+        boxList.add(tempBox);
         
         //Gets last element of the box ArrayList.
-        Box newBox = boxList.get(boxList.size() - 1);
+        Box newBox = tempBox;
         
         /*
             Gets the table model from the table in the GUI.
@@ -373,8 +212,8 @@ public class Order{
             newBox.getGrade(), newBox.getWidth(), newBox.getLength(), 
             newBox.getHeight(), colours, newBox.isReinforcedBottom(), 
             newBox.isReinforcedCorners(), newBox.isBoxSealable(), 
-            round.format(newBox.calculatePricePerBox()), 
-            round.format(newBox.calculateTotalPriceOfBoxes())});
+            newBox.calculatePricePerBox(), 
+            newBox.calculateTotalPriceOfBoxes()});
         
         //Increase orders total by the currently added boxes price.
         orderSum += newBox.calculateTotalPriceOfBoxes();
@@ -388,21 +227,25 @@ public class Order{
      */
     public void removeFromOrderList(){
         try {
-            //Gets currently selected boxes.
+            boolean confirm = gui.confirmRemove();
+            
             Box newBox = boxList.get(gui.OrderTable.getSelectedRow());
-            //Decreases order sum.
-            orderSum -= newBox.calculateTotalPriceOfBoxes();
+            //Gets currently selected boxes.
+            if (confirm) {
+               //Decreases order sum.
+                orderSum -= newBox.calculateTotalPriceOfBoxes();
 
-            //Removes from ArrayList
-            boxList.remove(gui.OrderTable.getSelectedRow());
-            
-            //Removes from GUI Order List.
-            DefaultTableModel model = (DefaultTableModel) gui.OrderTable.getModel();
-            model.removeRow(gui.OrderTable.getSelectedRow());
-            System.out.print(gui.OrderTable.getSelectedRow());
-            
-            //Updates order total sum
-            updateOrderTotal();
+                //Removes from ArrayList
+                boxList.remove(gui.OrderTable.getSelectedRow());
+
+                //Removes from GUI Order List.
+                DefaultTableModel model = (DefaultTableModel) gui.OrderTable.getModel();
+                model.removeRow(gui.OrderTable.getSelectedRow());
+                System.out.print(gui.OrderTable.getSelectedRow());
+
+                //Updates order total sum
+                updateOrderTotal(); 
+            }
         }
         catch (java.lang.ArrayIndexOutOfBoundsException exception){
             System.out.print("No Items Selected");
