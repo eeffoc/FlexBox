@@ -2,14 +2,12 @@ package flexbox.box;
 
 public abstract class Box {
     //Values of the simplest box
-    protected int width, height, length;
-    protected int type, grade, quantity;
-    protected double pricePerBox, totalPrice;
+    protected int width, height, length, type, grade, quantity;
+    protected float pricePerBox, totalPrice;
     protected boolean sealableTops;
     
     //Abstract methods
-    public abstract double calculatePricePerBox();
-    public abstract double calculateTotalPrice();
+    public abstract float getBoxExtrasMultiplier();
     
     /**
      * Box constructor. Gets values and sets as variables.
@@ -38,9 +36,9 @@ public abstract class Box {
      * Calculates box area in meters.
      * @return Area of box in meters.
      */
-    public double getBoxSizeInMeters(){
-        double area, areaInMeters;
-        area = (2 * length * width + 2 * length * height + 2 * width * height);
+    public float getBoxSizeInMeters(){
+        float area, areaInMeters;
+        area = ((2 * length * width) + (2 * length * height) + (2 * width * height));
         areaInMeters = squareCentimetersToSquareMeters(area);
         return areaInMeters;
     }
@@ -50,7 +48,7 @@ public abstract class Box {
      * @param cmSquared Square Centimeters to be converted to square meters.
      * @return Square meters.
      */
-    public double squareCentimetersToSquareMeters(double cmSquared){
+    public float squareCentimetersToSquareMeters(float cmSquared){
         return cmSquared / 10000;
     }
     
@@ -59,7 +57,7 @@ public abstract class Box {
      * @return Amount the price should be multiplied by.
      */
     public float getGradeMultiplier(){
-        float gradeMultiplier = 0f;
+        float gradeMultiplier = 0.0f;
         
         switch (grade){
             case 1:
@@ -82,9 +80,28 @@ public abstract class Box {
         }
         return gradeMultiplier;
     }
+    
+    public float getPriceSealable(){
+        float sealablePrice = 0.0f;
+        if (this.sealableTops) sealablePrice = 0.08f;
+        return sealablePrice;
+    }
+    
+    public float calculatePricePerBox(){
+        float boxPricePerMetreSquared, boxTotalCost;
+        boxPricePerMetreSquared = getBoxSizeInMeters() * getGradeMultiplier();
+        float boxExtrasMultiplier = getBoxExtrasMultiplier() + getPriceSealable();
+        boxTotalCost = boxPricePerMetreSquared * boxExtrasMultiplier;
+        setPricePerBox(boxTotalCost);
+        return boxTotalCost;
+    }
+    
+    public float calculateTotalPriceOfBoxes(){
+        float totalCost = this.quantity * this.pricePerBox;
+        return totalCost;
+    }
 
     //SETTERS
-    
     protected void setWidth(int width){
         this.width = width;
     }
@@ -109,11 +126,11 @@ public abstract class Box {
         this.quantity = quantity;
     }
     
-    protected void setPricePerBox(double pricePerBox){
+    protected void setPricePerBox(float pricePerBox){
         this.pricePerBox = pricePerBox;
     }
     
-    protected void setTotalPrice(double totalPrice){
+    protected void setTotalPrice(float totalPrice){
         this.totalPrice = totalPrice;
     }
     
@@ -151,11 +168,11 @@ public abstract class Box {
         return this.quantity;
     }
     
-    public double getPricePerBox(){
+    public float getPricePerBox(){
         return this.pricePerBox;
     }
     
-    public double getTotalPrice(){
+    public float getTotalPrice(){
         return this.totalPrice;
     }
     

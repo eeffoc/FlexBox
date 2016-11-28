@@ -11,17 +11,7 @@ public class BoxType1 extends Box{
     }
 
     @Override
-    public double calculatePricePerBox() {
-        double price;
-        price = getBoxSizeInMeters() * getGradeMultiplier();
-        this.setPricePerBox(price);
-        return price;
-    }
-    
-    @Override
-    public double calculateTotalPrice(){
-        double totalPrice = this.pricePerBox * this.quantity;
-        this.setTotalPrice(totalPrice);
-        return totalPrice;
+    public float getBoxExtrasMultiplier() {
+        return 1.0f;
     }
 }

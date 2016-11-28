@@ -12,23 +12,10 @@ public class BoxType4 extends BoxType3{
         this.type = 4;
         this.reinforcedBottom = true;
     }
-
-    @Override
-    public double calculatePricePerBox() {
-        double price;
-        price = getBoxSizeInMeters() * getGradeMultiplier();
-        double multiplier = 1.3;
-        if (this.sealableTops) multiplier += 0.08;
-        price *= multiplier;
-        this.setPricePerBox(price);
-        return price;
-    }
     
     @Override
-    public double calculateTotalPrice(){
-        double totalPrice = this.pricePerBox * this.quantity;
-        this.setTotalPrice(totalPrice);
-        return totalPrice;
+    public float getBoxExtrasMultiplier() {
+        return 1.3f;
     }
     
     @Override

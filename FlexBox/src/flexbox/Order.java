@@ -20,7 +20,7 @@ public class Order{
     layout.FlexBoxGUI gui = new layout.FlexBoxGUI(this);
     
     /*The total of the order*/
-    private double orderSum = 0.00;
+    private float orderSum = 0;
     
     /**
      * This constructor does not require parameters.
@@ -34,8 +34,8 @@ public class Order{
      * his current order.
      *  @param price The value to which to set the price label to.
      */
-    public void setPriceLabel(double price) {
-        gui.PriceLabel.setText("£" + price);
+    public void setPriceLabel(float price) {
+        gui.PriceLabel.setText("£" + String.format("%.2f", price));
     }
     
     /**
@@ -190,8 +190,10 @@ public class Order{
      *  @param height Height of a box (Centimetres).
      *  @return Box Surface Area in square meters.
      */
-    private double calculateSurfaceArea(double width, double length, double height){
-        double area = (2 * width * length + 2 * length * height + 2 * width * height) / 10000;
+    private float calculateSurfaceArea(int width, int length, int height){
+        float area = (2.0f * (float)width * (float)length + 2.0f * 
+                (float)length * (float)height + 2.0f * 
+                (float)width * (float)height) / 10000.0f;
         return area;
     }
     
@@ -200,17 +202,17 @@ public class Order{
      * calculated by the users current selection of box properties.
      * @return The total price of the current items.
      */
-    public double calculatePrice() {
-        double price = 0;
+    public float calculatePrice() {
+        float price = 0.0f;
         
         //Gets current variables
-        double length = getCurrentBoxLength();
-        double width = getCurrentBoxWidth();
-        double height = getCurrentBoxHeight();
-        double quantity = getCurrentBoxQuantity();
+        int length = getCurrentBoxLength();
+        int width = getCurrentBoxWidth();
+        int height = getCurrentBoxHeight();
+        int quantity = getCurrentBoxQuantity();
         
         //Stores surface area in square meters.
-        double surfaceArea = calculateSurfaceArea(width, length, height);
+        float surfaceArea = calculateSurfaceArea(width, length, height);
         
         //Stores whether the current box is sealable.
         boolean sealable = isCurrentBoxSealable();
@@ -218,19 +220,19 @@ public class Order{
         //Depending on the grade of the box we calculate the base price.
         switch ((int) getCurrentBoxGrade()){
             case 1:
-                price = surfaceArea * 0.5;
+                price = surfaceArea * 0.5f;
                 break;
             case 2:
-                price = surfaceArea * 0.6;
+                price = surfaceArea * 0.6f;
                 break;
             case 3:
-                price = surfaceArea * 0.72;
+                price = surfaceArea * 0.72f;
                 break;
             case 4:
-                price = surfaceArea * 0.9;
+                price = surfaceArea * 0.9f;
                 break;
             case 5:
-                price = surfaceArea * 1.4;
+                price = surfaceArea * 1.4f;
                 break;
         }
         
@@ -240,9 +242,9 @@ public class Order{
         */
         
         //Percentage divided by 100 (easier to read)
-        double priceIncreasePercentage = 1; 
+        float priceIncreasePercentage = 1.0f; 
         if (sealable){
-            priceIncreasePercentage += 0.08;
+            priceIncreasePercentage += 0.08f;
         }
         
         /*
@@ -271,7 +273,7 @@ public class Order{
         price = priceIncreasePercentage * price * quantity; //Calculates total.
         
         //Formats it to 2 decimal places and returns it.
-        return Double.valueOf(new DecimalFormat("#0.00").format(price));
+        return price;
     }
 
     /**
@@ -372,10 +374,10 @@ public class Order{
             newBox.getHeight(), colours, newBox.isReinforcedBottom(), 
             newBox.isReinforcedCorners(), newBox.isBoxSealable(), 
             round.format(newBox.calculatePricePerBox()), 
-            round.format(newBox.calculateTotalPrice())});
+            round.format(newBox.calculateTotalPriceOfBoxes())});
         
         //Increase orders total by the currently added boxes price.
-        orderSum += newBox.calculateTotalPrice();
+        orderSum += newBox.calculateTotalPriceOfBoxes();
         //Update it.
         updateOrderTotal();
     }
@@ -389,7 +391,7 @@ public class Order{
             //Gets currently selected boxes.
             Box newBox = boxList.get(gui.OrderTable.getSelectedRow());
             //Decreases order sum.
-            orderSum -= newBox.calculateTotalPrice();
+            orderSum -= newBox.calculateTotalPriceOfBoxes();
 
             //Removes from ArrayList
             boxList.remove(gui.OrderTable.getSelectedRow());

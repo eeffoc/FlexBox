@@ -14,21 +14,8 @@ public class BoxType5 extends BoxType4{
     }
 
     @Override
-    public double calculatePricePerBox() {
-        double price;
-        price = getBoxSizeInMeters() * getGradeMultiplier();
-        double multiplier = 1.4;
-        if (this.sealableTops) multiplier += 0.08;
-        price *= multiplier;
-        this.setPricePerBox(price);
-        return price;
-    }
-    
-    @Override
-    public double calculateTotalPrice(){
-        double totalPrice = calculatePricePerBox() * this.getQuantity();
-        this.setTotalPrice(totalPrice);
-        return totalPrice;
+    public float getBoxExtrasMultiplier() {
+        return 1.4f;
     }
     
     @Override

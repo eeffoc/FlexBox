@@ -474,7 +474,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
 
     private void CalculateCostButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CalculateCostButtonMousePressed
         if (ord.isInputValid()) {
-            double price = ord.calculatePrice();
+            float price = ord.calculatePrice();
             ord.setPriceLabel(price);
         }
     }//GEN-LAST:event_CalculateCostButtonMousePressed
@@ -513,7 +513,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
 
     private void confirmBox(){
         if (ord.isInputValid()) {
-            double price = ord.calculatePrice();
+            float price = ord.calculatePrice();
             if (price < 0.01){
                 JOptionPane.showConfirmDialog(null, "The Selected Options for a box"
                         + " can not be provided.\n Please change the properties and "
