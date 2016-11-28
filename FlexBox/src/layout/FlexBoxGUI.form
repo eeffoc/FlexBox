@@ -669,7 +669,9 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="OrderTable">
           <Properties>
-            <Property name="autoCreateRowSorter" type="boolean" value="true"/>
+            <Property name="autoCreateRowSorter" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="false" type="code"/>
+            </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="11" rowCount="0">
                 <Column editable="false" title="Quantity" type="java.lang.Integer"/>
@@ -681,8 +683,8 @@
                 <Column editable="false" title="Bottom" type="java.lang.Boolean"/>
                 <Column editable="false" title="Corners" type="java.lang.Boolean"/>
                 <Column editable="false" title="Sealable" type="java.lang.Boolean"/>
-                <Column editable="false" title="PPI" type="java.lang.Object"/>
-                <Column editable="false" title="Total" type="java.lang.Object"/>
+                <Column editable="false" title="PPI" type="java.lang.String"/>
+                <Column editable="false" title="Total" type="java.lang.String"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -751,6 +753,7 @@
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
             </Property>
+            <Property name="updateSelectionOnSort" type="boolean" value="false"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>

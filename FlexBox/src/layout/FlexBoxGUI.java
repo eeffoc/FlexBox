@@ -1,17 +1,19 @@
 package layout;
+import flexbox.Order;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 public class FlexBoxGUI extends javax.swing.JFrame {
     
     //Used for refferencing the Order class as being the super class.
-    flexbox.Order ord;
+    Order ord;
     
     /**
      * Creates new form FlexBoxGUI
      */ 
-    public FlexBoxGUI(flexbox.Order in) {
+    public FlexBoxGUI(Order in) {
         initComponents(); //Initiates components.
+        disableReinforcments();
         
         //Add a new Item GUI is hidden untill user clicks "Add to Order" button.
         AddNewItem.setVisible(false); 
@@ -347,7 +349,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         });
         getContentPane().add(Button_RemoveBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 45));
 
-        OrderTable.setAutoCreateRowSorter(true);
+        OrderTable.setAutoCreateRowSorter(false);
         OrderTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -357,7 +359,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false, false, false
@@ -374,6 +376,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         OrderTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         OrderTable.setShowVerticalLines(false);
         OrderTable.getTableHeader().setReorderingAllowed(false);
+        OrderTable.setUpdateSelectionOnSort(false);
         jScrollPane1.setViewportView(OrderTable);
         OrderTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (OrderTable.getColumnModel().getColumnCount() > 0) {
@@ -437,10 +440,9 @@ public class FlexBoxGUI extends javax.swing.JFrame {
 
     private void BottomCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BottomCheckboxActionPerformed
         if (!BottomCheckbox.isSelected()){
-            setGradeSlider(2, 5);
             CornerCheckbox.setSelected(false);
         }
-        else setGradeSlider(2, 5);
+        setGradeSlider(2, 5);
     }//GEN-LAST:event_BottomCheckboxActionPerformed
 
     private void WidthInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_WidthInputKeyTyped
@@ -468,10 +470,6 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_QuantityInputKeyTyped
 
     private void CalculateCostButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CalculateCostButtonMousePressed
-//        if (ord.isInputValid()) {
-//            float price = ord.calculatePrice();
-//            ord.setPriceLabel(price);
-//        }
         ord.addTempBox(false);
     }//GEN-LAST:event_CalculateCostButtonMousePressed
 
@@ -480,8 +478,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         AddNewItem.setVisible(true);
         this.setVisible(false);
         
-        GradeSlider.setMinimum(1);
-        GradeSlider.setMaximum(3);
+        setGradeSlider(1, 3);
         disableReinforcments();
         
         ColourRadio0.setSelected(true);
@@ -515,7 +512,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
                         + "Grade: " + ord.tempBox.getGrade() + "\n"
                         + "Reinforced Corners: " + ord.tempBox.isReinforcedCorners() + "\n"
                         + "Reinforced Bottom: " + ord.tempBox.isReinforcedBottom() + "\n"
-                        + "Sealable: " + ord.tempBox.isBoxSealable() + "\n\n Total: £" + ord.tempBox.getTotalPrice();
+                        + "Sealable: " + ord.tempBox.isBoxSealable() + "\n\n Total: " + ord.floatTo2dpCurrency(ord.tempBox.getTotalPrice());
                 int dialogResult = JOptionPane.showConfirmDialog(null, text, "Confirm Box(-es)", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if(dialogResult == JOptionPane.OK_OPTION){
                     this.setVisible(true);
