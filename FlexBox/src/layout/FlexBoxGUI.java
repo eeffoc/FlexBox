@@ -1,19 +1,17 @@
-﻿package layout;
-import flexbox.Order;
+package layout;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 public class FlexBoxGUI extends javax.swing.JFrame {
     
     //Used for refferencing the Order class as being the super class.
-    Order ord;
+    flexbox.Order ord;
     
     /**
      * Creates new form FlexBoxGUI
      */ 
-    public FlexBoxGUI(Order in) {
+    public FlexBoxGUI(flexbox.Order in) {
         initComponents(); //Initiates components.
-        disableReinforcments();
         
         //Add a new Item GUI is hidden untill user clicks "Add to Order" button.
         AddNewItem.setVisible(false); 
@@ -360,7 +358,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         });
         getContentPane().add(Button_RemoveBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 45));
 
-        OrderTable.setAutoCreateRowSorter(false);
+        OrderTable.setAutoCreateRowSorter(true);
         OrderTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -370,7 +368,6 @@ public class FlexBoxGUI extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
                 java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
@@ -388,7 +385,6 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         OrderTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         OrderTable.setShowVerticalLines(false);
         OrderTable.getTableHeader().setReorderingAllowed(false);
-        OrderTable.setUpdateSelectionOnSort(false);
         jScrollPane1.setViewportView(OrderTable);
         OrderTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (OrderTable.getColumnModel().getColumnCount() > 0) {
@@ -468,7 +464,6 @@ public class FlexBoxGUI extends javax.swing.JFrame {
 
     private void BottomCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BottomCheckboxActionPerformed
         if (!BottomCheckbox.isSelected()){
-            CornerCheckbox.setSelected(false);
             BottomCheckbox.setSelected(false);
             if (CornerCheckbox.isSelected()) {
                 CornerWarning.setVisible(true);
@@ -616,7 +611,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
                         + "Grade: " + ord.tempBox.getGrade() + "\n"
                         + "Reinforced Corners: " + ord.tempBox.isReinforcedCorners() + "\n"
                         + "Reinforced Bottom: " + ord.tempBox.isReinforcedBottom() + "\n"
-                        + "Sealable: " + ord.tempBox.isBoxSealable() + "\n\n Total: " + ord.floatTo2dpCurrency(ord.tempBox.getTotalPrice());
+                        + "Sealable: " + ord.tempBox.isBoxSealable() + "\n\n Total: £" + ord.tempBox.getTotalPrice();
                 int dialogResult = JOptionPane.showConfirmDialog(null, text, "Confirm Box(-es)", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if(dialogResult == JOptionPane.OK_OPTION){
                     this.setVisible(true);

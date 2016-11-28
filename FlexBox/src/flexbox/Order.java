@@ -1,5 +1,6 @@
 package flexbox;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import flexbox.box.*;
 import javax.swing.table.DefaultTableModel;
@@ -24,15 +25,14 @@ public class Order{
     public Box tempBox;
     
     private static final int EXCEPTION = 0;
-    
-    public static int MIN_HEIGHT = 10;
-    public static int MAX_HEIGHT = 400;
-    public static int MIN_LENGTH = 10;
-    public static int MAX_LENGTH = 400;
-    public static int MIN_WIDTH = 10;
-    public static int MAX_WIDTH = 400;
-    public static int MIN_QUANTITY = 1;
-    public static int MAX_QUANTITY = 500;
+    public static final int MIN_HEIGHT = 10;
+    public static final int MAX_HEIGHT = 400;
+    public static final int MIN_LENGTH = 10;
+    public static final int MAX_LENGTH = 400;
+    public static final int MIN_WIDTH = 10;
+    public static final int MAX_WIDTH = 400;
+    public static final int MIN_QUANTITY = 1;
+    public static final int MAX_QUANTITY = 500;
     
     /**
      * This constructor does not require parameters.
@@ -165,7 +165,7 @@ public class Order{
                     
             }
             tempBox.calculatePricePerBox();
-            gui.PriceLabel.setText(String.valueOf(floatTo2dpCurrency(tempBox.calculateTotalPriceOfBoxes())));
+            gui.PriceLabel.setText(String.valueOf("£" + tempBox.calculateTotalPriceOfBoxes()));
             if (AddToOrder) gui.confirmBox();
         }
     }
@@ -174,7 +174,8 @@ public class Order{
      * Updates the order total label.
      */
     private void updateOrderTotal(){
-        gui.Label_TotalSum.setText(floatTo2dpCurrency(orderSum));
+        DecimalFormat round = new DecimalFormat("#.##");
+        gui.Label_TotalSum.setText("£" + round.format(orderSum));
     }
     
     /**
@@ -211,8 +212,8 @@ public class Order{
             newBox.getGrade(), newBox.getWidth(), newBox.getLength(), 
             newBox.getHeight(), colours, newBox.isReinforcedBottom(), 
             newBox.isReinforcedCorners(), newBox.isBoxSealable(), 
-            floatTo2dpCurrency(newBox.calculatePricePerBox()), 
-            floatTo2dpCurrency(newBox.calculateTotalPriceOfBoxes())});
+            newBox.calculatePricePerBox(), 
+            newBox.calculateTotalPriceOfBoxes()});
         
         //Increase orders total by the currently added boxes price.
         orderSum += newBox.calculateTotalPriceOfBoxes();
@@ -286,10 +287,5 @@ public class Order{
             float totalPrice = tempBox.calculateTotalPriceOfBoxes();
             gui.updateAddNewBoxValues(width, height, length, quantity, 
                     sealable, grade, bottom, corners, colour, type, totalPrice);
-    }
-    
-    public String floatTo2dpCurrency(float value){
-        String convertedFloat = "£" + String.format("%.2f", value); 
-        return convertedFloat;
     }
 }
