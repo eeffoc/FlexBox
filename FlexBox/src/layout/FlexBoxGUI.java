@@ -2,6 +2,10 @@ package layout;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
+/**
+ * GUI for the order class.
+ * @author Klaudijus, Markus, Lukas UoP
+ */
 public class FlexBoxGUI extends javax.swing.JFrame {
     
     //Used for refferencing the Order class as being the super class.
@@ -9,6 +13,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     
     /**
      * Creates new form FlexBoxGUI
+     * @param in order instance to use.
      */ 
     public FlexBoxGUI(flexbox.Order in) {
         initComponents(); //Initiates components.
@@ -20,13 +25,12 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         
-        /*
-            Refference Order class as super class. To call the methods from Order.
-        */
+        /* Refference Order class as super class. 
+            To call the methods from Order.*/
         ord = in;
         
+        //Hides the warning of "Can't have corners without bottoms."
         CornerWarning.setVisible(false);
-        
     }
 
     /**
@@ -422,10 +426,11 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddNewItemWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_AddNewItemWindowClosing
-        this.setVisible(true);
+        this.setVisible(true); //Sets main window as visible.
     }//GEN-LAST:event_AddNewItemWindowClosing
 
     private void ColourRadio0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColourRadio0ActionPerformed
+        //If "No Colours" radio is selected - resets everything.
         if (ColourRadio0.isSelected()){
             setGradeSlider(1, 3);
             disableReinforcments();
@@ -434,6 +439,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ColourRadio0ActionPerformed
 
     private void ColourRadio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColourRadio1ActionPerformed
+        //If "1 Colour" radio is selected - resets everything.
         if (ColourRadio1.isSelected()){
             setGradeSlider(2, 4);
             disableReinforcments();
@@ -442,6 +448,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ColourRadio1ActionPerformed
 
     private void ColourRadio2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColourRadio2ActionPerformed
+        //If "2 Colours" radio is selected - resets everything.
         if (ColourRadio2.isSelected()){
             setGradeSlider(2, 5);
             BottomCheckbox.setEnabled(true);
@@ -482,24 +489,28 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_BottomCheckboxActionPerformed
 
     private void WidthInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_WidthInputKeyTyped
+        //Disables the user to enter more than 4 numbers.
         if (WidthInput.getText().length() <= 3) {
             isNumberInput(evt);
         } else evt.consume();
     }//GEN-LAST:event_WidthInputKeyTyped
 
     private void LengthInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LengthInputKeyTyped
+        //Disables the user to enter more than 4 numbers.
         if (LengthInput.getText().length() <= 3) {
             isNumberInput(evt);
         } else evt.consume();
     }//GEN-LAST:event_LengthInputKeyTyped
 
     private void HeightInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HeightInputKeyTyped
+        //Disables the user to enter more than 4 numbers.
         if (HeightInput.getText().length() <= 3) {
             isNumberInput(evt);
         } else evt.consume();
     }//GEN-LAST:event_HeightInputKeyTyped
 
     private void QuantityInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_QuantityInputKeyTyped
+        //Disables the user to enter more than 4 numbers.
         if (QuantityInput.getText().length() <= 3) {
             isNumberInput(evt);
         } else evt.consume();
@@ -510,11 +521,12 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_CalculateCostButtonMousePressed
 
     private void Button_AddBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_AddBoxMousePressed
-        AddNewItem.setLocationRelativeTo(null);
-        AddNewItem.setVisible(true);
-        this.setVisible(false);
+        AddNewItem.setLocationRelativeTo(null);//Sets window to center of screen
+        AddNewItem.setVisible(true); //Shows new window.
+        this.setVisible(false); //Hides main window.
         
-        setGradeSlider(1, 3);
+        //Sets Initial Values.
+        setGradeSlider(1, 3); 
         GradeSlider.setValue(1);
         disableReinforcments();
         
@@ -553,12 +565,28 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         ord.exportOrder();   
     }//GEN-LAST:event_Button_CheckOutMousePressed
 
+    /**
+     * Sets all the values of Add New Item window to the selections values
+     * for the user to edit his order.
+     * @param width previous width
+     * @param height previous height
+     * @param length previous length
+     * @param quantity previous quantity
+     * @param sealable were previous boxes needed as sealable
+     * @param grade previous grade
+     * @param bottom did previous boxes have reinforcced bottom
+     * @param corners did previous boxes have reinforcced corners
+     * @param colour previous colour
+     * @param type previous type
+     * @param price  previous total price
+     */
     public void updateAddNewBoxValues(int width, int height, int length, 
                     int quantity, boolean sealable, int grade, boolean bottom, 
                     boolean corners, int colour, int type, float price){
         
-        CornerWarning.setVisible(false);
+        CornerWarning.setVisible(false); //Hides warning.
         
+        //Updates all the GUI elements.
         switch (colour){
             case 0:
                 ColourRadio0.setSelected(true);
@@ -615,6 +643,9 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         PriceLabel.setText("£"+price);
     }
     
+    /**
+     * Asks the user to confirm the box(-es) he wants to add to his order.
+     */
     public void confirmBox(){
         String text = "Add the following " + ord.tempBox.getQuantity() + " box(-es) to your order:\n"
                         + "Width: " + ord.tempBox.getWidth() + "cm\n"
@@ -632,13 +663,22 @@ public class FlexBoxGUI extends javax.swing.JFrame {
                 }
     }
     
+    /**
+     * Checks if the user has entered a number (INPUT VALIDATION)
+     * @param evt The key the user has typed.
+     */
     private void isNumberInput(java.awt.event.KeyEvent evt){
         char c = evt.getKeyChar();
+        //If the key is not a digit or it's not backspace or if its not delete key
         if (!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || (c==KeyEvent.VK_DELETE))){
-            evt.consume();
+            evt.consume(); //Consume the key.
         }
+        //else do nothing.
     }
     
+    /**
+     * Disables the bottom and corner checkboxes.
+     */
     private void disableReinforcments(){
         BottomCheckbox.setEnabled(false);
         CornerCheckbox.setEnabled(false);
@@ -646,6 +686,11 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         CornerCheckbox.setSelected(false);
     }
     
+    /**
+     * Sets the grade sliders values
+     * @param min The minimum value for the grade slider
+     * @param max The maximum value for the grade slider
+     */
     private void setGradeSlider(int min, int max){
         GradeSlider.setMinimum(min);
         GradeSlider.setMaximum(max);
@@ -654,18 +699,32 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Show which field is empty
+     * @param field - the name of the field.
+     */
     public void emptyFieldError(String field){
         String message = "The " + field + " field is empty.\n"
                 + "Please check your input and try again.";
         JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Show which field is wrong and shows the allowed values.
+     * @param field - the name of the field.
+     * @param min - minimum value allowed for field.
+     * @param max - maximum value allowed for field.
+     */
     public void wrongInput(String field, int min, int max){
         String message = "The " + field + " field is incorrect.\n"
                 + "The value should be between " + min + " and " + max + ".";
         JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Asks the user whether he is certain he wants to delete the selected boxes
+     * @return whether the user wants or not to delete the boxes.
+     */
     public boolean confirmRemove(){
         String message = "Are you sure you want to delete selected items?";
         int dialogResult = JOptionPane.showConfirmDialog(null, message, "Confirm Deletion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -673,11 +732,18 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         else return false;
     }
     
+    /**
+     * Shows an error that the user didn't select anything.
+     */
     public void nothingSelectedError() {
         String message = "No Rows Selected!\n";
         JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Asks the user for confirmation whether to write to file or not.
+     * @return whether to write to file.
+     */
     public boolean writeToFile() {
         String message = "Are you sure you want to export your order to file?\n"
                 + "Order total: £" + ord.getOrdTotal();
@@ -686,16 +752,26 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         else return false;
     }
     
+    /**
+     * Shows that the action has been completed successfully.
+     */
     public void popupSuccess() {
         JOptionPane.showMessageDialog(this,"Success!");
     }
     
+    /**
+     * Shows an error that something went really wrong and the order could
+     * not be exported.
+     */
     public void popupError(){
         String message = "FAILED TO EXPORT!\n"
                 + "Something went wrong, please contact your system administrator.";
         JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * Shows an error that there are no items in the users order.
+     */
     public void popupNoItems(){
         String message = "FAILED TO EXPORT!\n"
                 + "No Items in your order!";
