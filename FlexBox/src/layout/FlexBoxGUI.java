@@ -376,7 +376,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false, false, false
@@ -640,27 +640,32 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         HeightInput.setText(String.valueOf(height));
         LengthInput.setText(String.valueOf(length));
         QuantityInput.setText(String.valueOf(quantity));
-        PriceLabel.setText("£"+price);
+        PriceLabel.setText(ord.floatTo2dpCurrency(price));
     }
     
     /**
      * Asks the user to confirm the box(-es) he wants to add to his order.
      */
     public void confirmBox(){
-        String text = "Add the following " + ord.tempBox.getQuantity() + " box(-es) to your order:\n"
-                        + "Width: " + ord.tempBox.getWidth() + "cm\n"
-                        + "Height: " + ord.tempBox.getHeight() + "cm\n"
-                        + "Length: " + ord.tempBox.getLength() + "cm\n"
-                        + "Grade: " + ord.tempBox.getGrade() + "\n"
-                        + "Reinforced Corners: " + ord.tempBox.isReinforcedCorners() + "\n"
-                        + "Reinforced Bottom: " + ord.tempBox.isReinforcedBottom() + "\n"
-                        + "Sealable: " + ord.tempBox.isBoxSealable() + "\n\n Total: £" + ord.tempBox.getTotalPrice();
-                int dialogResult = JOptionPane.showConfirmDialog(null, text, "Confirm Box(-es)", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if(dialogResult == JOptionPane.OK_OPTION){
-                    this.setVisible(true);
-                    AddNewItem.setVisible(false);
-                    ord.addToOrderList();
-                }
+        String text = "Add the following " + ord.tempBox.getQuantity() 
+                + " box(-es) to your order:\n"
+                + "Width: " + ord.tempBox.getWidth() + "cm\n"
+                + "Height: " + ord.tempBox.getHeight() + "cm\n"
+                + "Length: " + ord.tempBox.getLength() + "cm\n"
+                + "Grade: " + ord.tempBox.getGrade() + "\n"
+                + "Reinforced Corners: " + ord.tempBox.isReinforcedCorners() + "\n"
+                + "Reinforced Bottom: " + ord.tempBox.isReinforcedBottom() + "\n"
+                + "Sealable: " + ord.tempBox.isBoxSealable() 
+                + "\n\n Total: " + ord.floatTo2dpCurrency(ord.tempBox.getTotalPrice());
+        
+        int dialogResult = JOptionPane.showConfirmDialog(
+                null, text, "Confirm Box(-es)", 
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(dialogResult == JOptionPane.OK_OPTION){
+            this.setVisible(true);
+            AddNewItem.setVisible(false);
+            ord.addToOrderList();
+        }
     }
     
     /**
@@ -746,8 +751,9 @@ public class FlexBoxGUI extends javax.swing.JFrame {
      */
     public boolean writeToFile() {
         String message = "Are you sure you want to export your order to file?\n"
-                + "Order total: £" + ord.getOrdTotal();
-        int dialogResult = JOptionPane.showConfirmDialog(null, message, "Confirm export", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                + "Order total: " + ord.floatTo2dpCurrency(ord.getOrdTotal());
+        int dialogResult = JOptionPane.showConfirmDialog(null, message, "Confirm export", 
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(dialogResult == JOptionPane.OK_OPTION) return true;
         else return false;
     }

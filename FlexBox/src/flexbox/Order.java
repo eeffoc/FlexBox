@@ -29,7 +29,7 @@ public class Order{
     */
     public Box tempBox;
     
-    /*Exception value if the user input is empty - it gets threated as 0
+    /*Exception value if the user input is empty - it gets treated as 0
      and stops any further execution*/
     private static final int EXCEPTION = 0; 
     /*Static fields to define the limits of the software*/
@@ -58,7 +58,7 @@ public class Order{
      */
     public static final int MAX_WIDTH = 400;
     /**
-     * Minimum user input value for this field.
+     * Minimum user input value for quantity field.
      */
     public static final int MIN_QUANTITY = 1;
     /**
@@ -271,7 +271,7 @@ public class Order{
             tempBox.calculatePricePerBox(); 
             /*Sets the text price label as total price. Can be easily changed to
                 price per item.*/
-            gui.PriceLabel.setText(String.valueOf("£" + 
+            gui.PriceLabel.setText(floatTo2dpCurrency(
                     tempBox.calculateTotalPriceOfBoxes()));
             
             //If intended to add to order - throws a confirmation popup.
@@ -283,10 +283,8 @@ public class Order{
      * Updates the order total label.
      */
     private void updateOrderTotal(){
-        //Formats it to two decimal places
-        DecimalFormat round = new DecimalFormat("#.##"); 
         //Updates it in GUI.
-        gui.Label_TotalSum.setText("£" + round.format(orderSum));
+        gui.Label_TotalSum.setText(floatTo2dpCurrency(orderSum));
     }
     
     /**
@@ -324,8 +322,8 @@ public class Order{
             tempBox.getGrade(), tempBox.getWidth(), tempBox.getLength(), 
             tempBox.getHeight(), colours, tempBox.isReinforcedBottom(), 
             tempBox.isReinforcedCorners(), tempBox.isBoxSealable(), 
-            tempBox.calculatePricePerBox(), 
-            tempBox.calculateTotalPriceOfBoxes()});
+            floatTo2dpCurrency(tempBox.calculatePricePerBox()), 
+            floatTo2dpCurrency(tempBox.calculateTotalPriceOfBoxes())});
         
         //Increase orders total by the currently added boxes price.
         orderSum += tempBox.calculateTotalPriceOfBoxes();
@@ -443,6 +441,17 @@ public class Order{
     }
     
     /**
+     * Takes in a float and returns a String which is formatted
+     * to two decimal places with a pound symbol (£).
+     * @param value float to be converted.
+     * @return converted float with a £ in front (GBP).
+     */
+    public String floatTo2dpCurrency(float value){
+        String convertedFloat = "£" + String.format("%.2f", value); 
+        return convertedFloat;
+    }
+    
+    /**
      * Exports order to file.
      */
     public void exportOrder(){
@@ -456,7 +465,7 @@ public class Order{
                     /*Top of object will be formatted to show the total price
                         and the total of number of boxes.*/
                     writer.println("Invoice for order\n");
-                    writer.println("Total cost: £" + orderSum);
+                    writer.println("Total cost: " + floatTo2dpCurrency(orderSum));
                     writer.println("Total number of boxes: " + 
                             orderTotalBoxes());
                     writer.println("*************************************");
@@ -480,9 +489,10 @@ public class Order{
                                 box.isReinforcedCorners());
                         writer.println("Sealable boxes:" + box.isBoxSealable());
                         writer.println("****************Cost****************");
-                        writer.println("Price Per Item: £" + 
-                                box.getPricePerBox());
-                        writer.println("Total: £" + box.getTotalPrice());
+                        writer.println("Price Per Item: " + 
+                                floatTo2dpCurrency(box.getPricePerBox()));
+                        writer.println("Total: " + 
+                                floatTo2dpCurrency(box.getTotalPrice()));
                         writer.println(" ");
                         writer.println(" ");
                         id++;

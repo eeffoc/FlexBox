@@ -34,7 +34,7 @@ public abstract class Box {
      */
     public float getBoxSizeInMeters(){
         float area, areaInMeters;
-        area = ((2 * length * width) + (2 * length * height) + (2 * width * height));
+        area = ((2.0f * length * width) + (2.0f * length * height) + (2.0f * width * height));
         areaInMeters = squareCentimetersToSquareMeters(area);
         return areaInMeters;
     }
@@ -45,11 +45,12 @@ public abstract class Box {
      * @return Square meters.
      */
     public float squareCentimetersToSquareMeters(float cmSquared){
-        return cmSquared / 10000;
+        return cmSquared / 10000.0f;
     }
     
     /**
-     * Calculates how much the price should be increased (multiplied) by.
+     * Calculates how much the price should be increased (multiplied) by based
+     * on grade cost per m2.
      * @return Amount the price should be multiplied by.
      */
     public float getGradeMultiplier(){
@@ -77,23 +78,45 @@ public abstract class Box {
         return gradeMultiplier;
     }
     
+    /**
+     * Checks if box has sealable tops
+     * @return multiplier for sealable tops when box is sealable
+     */
     public float getPriceSealable(){
         float sealablePrice = 0.0f;
         if (this.sealableTops) sealablePrice = 0.08f;
         return sealablePrice;
     }
     
+    /**
+     * Calculates the price for a box
+     * @return total cost of one box
+     */
     public float calculatePricePerBox(){
-        float boxPricePerMetreSquared, boxTotalCost;
+        float boxPricePerMetreSquared, boxTotalCost, boxExtrasMultiplier;
+        
         boxPricePerMetreSquared = getBoxSizeInMeters() * getGradeMultiplier();
-        float boxExtrasMultiplier = getBoxExtrasMultiplier() + getPriceSealable();
+        boxExtrasMultiplier = getBoxExtrasMultiplier() + getPriceSealable();
         boxTotalCost = boxPricePerMetreSquared * boxExtrasMultiplier;
-        setPricePerBox(boxTotalCost);
-        return boxTotalCost;
+        
+        //This is required to round a float to 2 decimal places
+        //and still save it as a float instead of a string
+        //When not rounding and having a quantity of higher than 1 you will
+        //have a different sum than actual PPI * quantity
+        double roundedBoxTotalCost = Math.round(boxTotalCost*100.0) / 100.0;
+        
+        //Casting double to a float
+        setPricePerBox((float)roundedBoxTotalCost);
+        return (float)roundedBoxTotalCost;
     }
     
+    /**
+     * Calculates total cost of boxes ordered of this type
+     * @return cost of all boxes ordered with these specifications
+     */
     public float calculateTotalPriceOfBoxes(){
         float totalCost = this.quantity * this.pricePerBox;
+        
         setTotalPrice(totalCost);
         return totalCost;
     }
@@ -136,7 +159,6 @@ public abstract class Box {
     }
     
     //GETTERS
-    
     public int getWidth(){
         return this.width;
     }
