@@ -3,6 +3,8 @@ package flexbox;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import flexbox.box.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -287,5 +289,57 @@ public class Order{
             float totalPrice = tempBox.calculateTotalPriceOfBoxes();
             gui.updateAddNewBoxValues(width, height, length, quantity, 
                     sealable, grade, bottom, corners, colour, type, totalPrice);
+    }
+    
+    public int orderTotalBoxes(){
+        int numBoxes = 0;
+        for (Box box : boxList){
+            numBoxes += box.getQuantity();
+        }
+        return numBoxes;
+    }
+    
+    public float getOrdTotal(){
+        return orderSum;
+    }
+    
+    public void exportOrder(){
+        try{
+            if (boxList.size() > 0) {
+                PrintWriter writer = new PrintWriter("Order.txt", "UTF-8");
+                if (gui.writeToFile()){
+                    writer.println("Invoice for order\n");
+                    writer.println("Total cost: £" + orderSum);
+                    writer.println("Total number of boxes: " + orderTotalBoxes());
+                    writer.println("*************************************");
+                    writer.println("*************************************\n\n");
+                    int id = 1;
+                    for (Box box : boxList){
+                        writer.println("ID:" + id);
+                        writer.println("Quantity:" + box.getQuantity());
+                        writer.println("*************Properites*************");
+                        writer.println("Width:" + box.getWidth());
+                        writer.println("Length:" + box.getLength());
+                        writer.println("Height:" + box.getHeight());
+                        writer.println("Grade:" + box.getGrade());
+                        writer.println("Colour:" + box.getColour());
+                        writer.println("Reinforced Bottoms:" + box.isReinforcedBottom());
+                        writer.println("Reinforced Corners:" + box.isReinforcedCorners());
+                        writer.println("Sealable boxes:" + box.isBoxSealable());
+                        writer.println("****************Cost****************");
+                        writer.println("Price Per Item: £" + box.getPricePerBox());
+                        writer.println("Total: £" + box.getTotalPrice());
+                        writer.println(" ");
+                        writer.println(" ");
+                        id++;
+                    }
+                    writer.close();
+                    gui.popupSuccess();
+                }
+            }
+            else gui.popupNoItems();
+        } catch (IOException e) {
+           gui.popupError();
+        }
     }
 }

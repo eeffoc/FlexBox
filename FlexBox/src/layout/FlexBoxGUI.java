@@ -347,6 +347,11 @@ public class FlexBoxGUI extends javax.swing.JFrame {
 
         Button_CheckOut.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         Button_CheckOut.setText("Check out");
+        Button_CheckOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                Button_CheckOutMousePressed(evt);
+            }
+        });
         getContentPane().add(Button_CheckOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 450, 300, 40));
 
         Button_RemoveBox.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
@@ -358,7 +363,6 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         });
         getContentPane().add(Button_RemoveBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 45));
 
-        OrderTable.setAutoCreateRowSorter(true);
         OrderTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -511,6 +515,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         this.setVisible(false);
         
         setGradeSlider(1, 3);
+        GradeSlider.setValue(1);
         disableReinforcments();
         
         ColourRadio0.setSelected(true);
@@ -520,6 +525,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         QuantityInput.setText(String.valueOf(ord.MIN_QUANTITY));
         PriceLabel.setText("£0.00");
         SealableCheckbox.setSelected(false);
+        CornerWarning.setVisible(false);
     }//GEN-LAST:event_Button_AddBoxMousePressed
 
     private void Button_RemoveBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_RemoveBoxMousePressed
@@ -543,10 +549,16 @@ public class FlexBoxGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_Button_EditBoxMousePressed
 
+    private void Button_CheckOutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_CheckOutMousePressed
+        ord.exportOrder();   
+    }//GEN-LAST:event_Button_CheckOutMousePressed
+
     public void updateAddNewBoxValues(int width, int height, int length, 
                     int quantity, boolean sealable, int grade, boolean bottom, 
                     boolean corners, int colour, int type, float price){
-
+        
+        CornerWarning.setVisible(false);
+        
         switch (colour){
             case 0:
                 ColourRadio0.setSelected(true);
@@ -655,14 +667,38 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     }
     
     public boolean confirmRemove(){
-        String message = "Are you sure you want to delete selected row?";
-        int dialogResult = JOptionPane.showConfirmDialog(null, message, "Confirm Box(-es)", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        String message = "Are you sure you want to delete selected items?";
+        int dialogResult = JOptionPane.showConfirmDialog(null, message, "Confirm Deletion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(dialogResult == JOptionPane.OK_OPTION) return true;
         else return false;
     }
     
     public void nothingSelectedError() {
         String message = "No Rows Selected!\n";
+        JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public boolean writeToFile() {
+        String message = "Are you sure you want to export your order to file?\n"
+                + "Order total: £" + ord.getOrdTotal();
+        int dialogResult = JOptionPane.showConfirmDialog(null, message, "Confirm export", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(dialogResult == JOptionPane.OK_OPTION) return true;
+        else return false;
+    }
+    
+    public void popupSuccess() {
+        JOptionPane.showMessageDialog(this,"Success!");
+    }
+    
+    public void popupError(){
+        String message = "FAILED TO EXPORT!\n"
+                + "Something went wrong, please contact your system administrator.";
+        JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public void popupNoItems(){
+        String message = "FAILED TO EXPORT!\n"
+                + "No Items in your order!";
         JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
