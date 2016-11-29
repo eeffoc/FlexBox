@@ -14,13 +14,9 @@ public abstract class Box {
      *  @param width Width of a Box.
      *  @param height Height of a Box.
      *  @param length Length of a Box.
-     *  @param type Type of a Box.
      *  @param grade Grade of a Box.
-     *  @param colour Colour of the Box.
      *  @param quantity  Quantity of Boxes.
      *  @param sealableTops Whether the top of the box should be Sealable.
-     *  @param reinforcedBottom Whether the box has reinforced Bottom.
-     *  @param reinforcedCorners Whether the box has reinforced Corners.
      */
     public Box(int width, int height, int length, int grade,
             int quantity, boolean sealableTops){
