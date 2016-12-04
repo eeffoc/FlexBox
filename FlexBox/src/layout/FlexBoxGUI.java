@@ -558,6 +558,8 @@ public class FlexBoxGUI extends javax.swing.JFrame {
             this.setVisible(false);
             AddNewItem.setLocationRelativeTo(null);
             AddNewItem.setVisible(true);
+            ord.isEditing = true;
+            ord.setEditableValues();
         }
     }//GEN-LAST:event_Button_EditBoxMousePressed
 

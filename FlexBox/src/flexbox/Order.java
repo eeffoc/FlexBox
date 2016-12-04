@@ -66,6 +66,8 @@ public class Order{
      */
     public static final int MAX_QUANTITY = 500;
     
+    public boolean isEditing = false;
+    
     /**
      * This constructor does not require parameters.
      */
@@ -295,7 +297,22 @@ public class Order{
      */
     public void addToOrderList(){
         //Adds to the array which holds all the boxes in the order.
-        boxList.add(tempBox); 
+        boxList.add(tempBox);
+        
+        if (isEditing){
+            //Decreases order sum.
+            orderSum -= tempBox.calculateTotalPriceOfBoxes();
+ 
+            //Removes from ArrayList because that element will be edited
+            boxList.remove(gui.OrderTable.getSelectedRow());
+ 
+            //Removes from GUI Order List.
+            DefaultTableModel model = (DefaultTableModel) gui.OrderTable.getModel();
+            model.removeRow(gui.OrderTable.getSelectedRow());
+            //Updates order total sum
+            updateOrderTotal();
+            isEditing = false;
+        }
 
         /*
             Gets the table model from the table in the GUI.
@@ -375,18 +392,7 @@ public class Order{
         try {
             //Tries to get the selected boxes
             tempBox = boxList.get(gui.OrderTable.getSelectedRow());
-
-            //Decreases order sum.
-            orderSum -= tempBox.calculateTotalPriceOfBoxes();
-
-            //Removes from ArrayList because that element will be edited
-            boxList.remove(gui.OrderTable.getSelectedRow());
-
-            //Removes from GUI Order List.
-            DefaultTableModel model = (DefaultTableModel) gui.OrderTable.getModel();
-            model.removeRow(gui.OrderTable.getSelectedRow());
-                //Updates order total sum
-            updateOrderTotal();
+            
             return true;
         }
         catch (java.lang.ArrayIndexOutOfBoundsException exception){
