@@ -551,6 +551,7 @@ public class FlexBoxGUI extends javax.swing.JFrame {
     private void CancelButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelButtonMousePressed
         this.setVisible(true);
         AddNewItem.setVisible(false);
+        ord.isEditing = false;
     }//GEN-LAST:event_CancelButtonMousePressed
 
     private void Button_EditBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_EditBoxMousePressed
